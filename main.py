@@ -74,9 +74,9 @@ class GraphProcessor:
                 "visited": False,
                 "previous": None,
                 "size": 0,
-                "distance": float("inf"),  # Dodano dla Dijkstry
-                "g_score": float("inf"),  # Dodano dla A*
-                "f_score": float("inf")   # Dodano dla A*
+                "distance": float("inf"),
+                "g_score": float("inf"),
+                "f_score": float("inf")
             })
 
     @staticmethod
@@ -151,7 +151,7 @@ class DijkstraAlgorithm:
             current_distance, current_node = heapq.heappop(pq)
 
             if current_node == end:
-                # Nie dodajemy klatki tutaj, rekonstrukcja będzie na końcu
+
                 return
 
             if not self.graph.nodes[current_node]["visited"]:
@@ -159,7 +159,7 @@ class DijkstraAlgorithm:
                 for edge in self.graph.out_edges(current_node, keys=True):
                     self._process_edge(edge, current_distance, pq)
 
-                # Dodawanie klatki animacji w trakcie działania algorytmu
+
                 if plot and step % 10 == 0:
                     self.visualizer.capture_frame()
                 step += 1
@@ -200,7 +200,7 @@ class AStarAlgorithm:
             _, current_node = heapq.heappop(pq)
 
             if current_node == end:
-                # Nie dodajemy klatki tutaj, rekonstrukcja będzie na końcu
+
                 return
 
             if not self.graph.nodes[current_node]["visited"]:
@@ -208,7 +208,7 @@ class AStarAlgorithm:
                 for edge in self.graph.out_edges(current_node, keys=True):
                     self._process_edge(edge, end, pq)
 
-                # Dodawanie klatki animacji w trakcie działania algorytmu
+
                 if plot and step % 10 == 0:
                     self.visualizer.capture_frame()
                 step += 1
@@ -295,7 +295,7 @@ def main():
     # Run BFS
     GraphProcessor.initialize_nodes(graph)
     GraphProcessor.initialize_edges(graph, styler)
-    bfs_visualizer = GraphVisualizer(graph)  # Oddzielny wizualizator dla BFS
+    bfs_visualizer = GraphVisualizer(graph)
     bfs = BFSAlgorithm(graph, bfs_visualizer, styler)
     bfs.execute(start, end, plot=True)
 
@@ -307,9 +307,9 @@ def main():
     bfs_visualizer.save_gif("bfs_animation.gif")
 
     # Run Dijkstra
-    GraphProcessor.initialize_nodes(graph)  # Reset węzłów
-    GraphProcessor.initialize_edges(graph, styler)  # Reset krawędzi
-    dijkstra_visualizer = GraphVisualizer(graph)  # Oddzielny wizualizator dla Dijkstry
+    GraphProcessor.initialize_nodes(graph)
+    GraphProcessor.initialize_edges(graph, styler)
+    dijkstra_visualizer = GraphVisualizer(graph)
     dijkstra = DijkstraAlgorithm(graph, dijkstra_visualizer, styler)
     dijkstra.execute(start, end, plot=True)
 
@@ -321,9 +321,9 @@ def main():
     dijkstra_visualizer.save_gif("dijkstra_animation.gif")
 
     # Run A*
-    GraphProcessor.initialize_nodes(graph)  # Reset węzłów
-    GraphProcessor.initialize_edges(graph, styler)  # Reset krawędzi
-    astar_visualizer = GraphVisualizer(graph)  # Oddzielny wizualizator dla A*
+    GraphProcessor.initialize_nodes(graph)
+    GraphProcessor.initialize_edges(graph, styler)
+    astar_visualizer = GraphVisualizer(graph)
     astar = AStarAlgorithm(graph, astar_visualizer, styler)
     astar.execute(start, end, plot=True)
 
