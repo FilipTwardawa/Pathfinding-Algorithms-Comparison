@@ -1,3 +1,4 @@
+"""File containing algorithms' classes and methods."""
 import math
 import heapq
 from typing import Tuple

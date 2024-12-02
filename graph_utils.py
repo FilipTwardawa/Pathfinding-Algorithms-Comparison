@@ -1,7 +1,8 @@
-import osmnx as ox
+"""File containing graph's classes and methods."""
 from io import BytesIO
 from PIL import Image
 import matplotlib.pyplot as plt
+import osmnx as ox
 
 
 class GraphStyler:
@@ -27,7 +28,7 @@ class GraphVisualizer:
 
     def capture_frame(self):
         """Captures the current state of the graph as an image frame."""
-        fig, ax = ox.plot_graph(
+        fig, _ = ox.plot_graph(
             self.graph,
             node_size=[self.graph.nodes[node].get("size", 0) for node in self.graph.nodes],
             edge_color=[self.graph.edges[edge].get("color", "#2432B0") for edge in self.graph.edges],

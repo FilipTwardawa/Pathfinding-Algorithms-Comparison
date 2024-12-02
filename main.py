@@ -1,9 +1,11 @@
+"""Example file using implemented algorithms."""
+import random
 from graph_utils import initialize_graph, GraphStyler, GraphProcessor, GraphVisualizer
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm, PathReconstructor
-import random
 
 
 def main():
+    """Creates an example graph and runs pathfinding algorithms."""
     # Ustawienie miejsca, dla którego generujemy graf
     place_name = "Gliwice, Poland"
     graph = initialize_graph(place_name)

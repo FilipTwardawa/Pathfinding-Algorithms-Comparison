@@ -1,9 +1,11 @@
-import pytest
+"""Test file for implemented algorithms and graph."""
+# import pytest
 from graph_utils import initialize_graph, GraphProcessor, GraphStyler, GraphVisualizer
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
 
 
 def test_initialize_graph():
+    """Tests graph initation - graph, nodes and edges must exist."""
     graph = initialize_graph("Gliwice, Poland")
     assert graph is not None
     assert len(graph.nodes) > 0
@@ -11,6 +13,7 @@ def test_initialize_graph():
 
 
 def test_bfs_algorithm():
+    """Tests BFS algorithm - end point must be reached."""
     graph = initialize_graph("Gliwice, Poland")
     visualizer = GraphVisualizer(graph)
     styler = GraphStyler()
@@ -28,6 +31,7 @@ def test_bfs_algorithm():
 
 
 def test_dijkstra_algorithm():
+    """Tests Dijkstra algorithm - end point must not have infinite cost."""
     graph = initialize_graph("Gliwice, Poland")
     visualizer = GraphVisualizer(graph)
     styler = GraphStyler()
@@ -45,6 +49,7 @@ def test_dijkstra_algorithm():
 
 
 def test_astar_algorithm():
+    """Tests A* algorithm - end point must not have infinite cost."""
     graph = initialize_graph("Gliwice, Poland")
     visualizer = GraphVisualizer(graph)
     styler = GraphStyler()
