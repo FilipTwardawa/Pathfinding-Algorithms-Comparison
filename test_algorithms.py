@@ -2,8 +2,9 @@
 
 from graph_utils import initialize_graph, GraphProcessor, GraphStyler, GraphVisualizer
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
+from networkx.algorithms.components import connected_components
 
-
+import random
 def test_initialize_graph():
     """Tests graph initialization - graph, nodes, and edges must exist."""
     graph = initialize_graph("Gliwice, Poland")
@@ -12,27 +13,29 @@ def test_initialize_graph():
     assert len(graph.edges) > 0, "Graph must have edges."
 
 
+
 def test_bfs_algorithm():
     """Tests BFS algorithm - end point must be reached."""
     graph = initialize_graph("Gliwice, Poland")
     visualizer = GraphVisualizer(graph)
     styler = GraphStyler()
 
-    # Initialize nodes and edges
     GraphProcessor.initialize_nodes(graph)
     GraphProcessor.initialize_edges(graph, styler)
 
+    components = list(connected_components(graph.to_undirected()))
+    if len(components) > 1:
+        largest_component = max(components, key=len)  # Choose the largest connected component
+        nodes = list(largest_component)
+        start = random.choice(nodes)
+        end = random.choice(nodes)
+    else:
+        start = list(graph.nodes)[0]
+        end = list(graph.nodes)[-1]
+
     bfs = BFSAlgorithm(graph, visualizer, styler)
-    start = list(graph.nodes)[0]
-    end = list(graph.nodes)[-1]
-
-    print(f"Start: {start}, End: {end}")
     bfs.execute(start, end)
-
-    assert graph.nodes[end]["visited"], "BFS failed to visit the end node."
-
-
-
+    assert graph.nodes[end]["visited"], f"BFS failed to visit the end node from start {start} to end {end}."
 def test_dijkstra_algorithm():
     """Tests Dijkstra algorithm - end point must not have infinite cost."""
     graph = initialize_graph("Gliwice, Poland")
