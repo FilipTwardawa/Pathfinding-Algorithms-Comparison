@@ -3,6 +3,7 @@ from io import BytesIO
 from PIL import Image
 import matplotlib.pyplot as plt
 import osmnx as ox
+import networkx as nx
 
 
 class GraphStyler:
@@ -18,6 +19,14 @@ class GraphStyler:
         """Sets the style for a graph node."""
         graph.nodes[node]["size"] = size
 
+    @staticmethod
+    def reset_styles(graph):
+        """Resets all nodes and edges to default styles."""
+        for node in graph.nodes:
+            graph.nodes[node].update({"size": 0})
+        for edge in graph.edges:
+            graph.edges[edge].update({"color": "#2432B0", "alpha": 0.3, "linewidth": 0.5})
+
 
 class GraphVisualizer:
     """Manages visualization and GIF creation for a graph."""
@@ -28,6 +37,10 @@ class GraphVisualizer:
 
     def capture_frame(self):
         """Captures the current state of the graph as an image frame."""
+        if self.graph is None or len(self.graph.nodes) == 0:
+            print("Graph is empty. Skipping frame capture.")
+            return
+
         fig, _ = ox.plot_graph(
             self.graph,
             node_size=[self.graph.nodes[node].get("size", 0) for node in self.graph.nodes],
@@ -58,6 +71,8 @@ class GraphVisualizer:
                 loop=0
             )
             print(f"GIF saved as {gif_filename}")
+        else:
+            print("No frames to save. GIF not created.")
 
 
 class GraphProcessor:
@@ -79,17 +94,34 @@ class GraphProcessor:
     @staticmethod
     def initialize_edges(graph, styler: GraphStyler):
         """Resets all edges' styles."""
-        for edge in graph.edges:
-            styler.style_edge(graph, edge)
+        styler.reset_styles(graph)
+
+    @staticmethod
+    def reset_graph_styles(graph, styler: GraphStyler):
+        """Resets both node and edge styles for a clean graph state."""
+        GraphProcessor.initialize_nodes(graph)
+        GraphProcessor.initialize_edges(graph, styler)
 
 
 def initialize_graph(place_name: str):
-    """Initializes the graph and sets edge weights."""
-    graph = ox.graph_from_place(place_name, network_type='drive')
+    """Initializes the graph, ensures connectivity, and sets edge weights."""
+    print(f"Initializing graph for: {place_name}...")
+    graph = ox.graph_from_place(place_name, network_type="drive")
+
+    # Ensure the graph is strongly connected
+    if not nx.is_strongly_connected(graph):
+        print("Graph is not strongly connected. Extracting largest strongly connected component...")
+        largest_component = max(nx.strongly_connected_components(graph), key=len)
+        graph = graph.subgraph(largest_component).copy()
+        print("Largest strongly connected component extracted.")
+
+    # Set weights for edges
     for edge in graph.edges:
         maxspeed = 40
         if "maxspeed" in graph.edges[edge]:
             maxspeed_value = graph.edges[edge]["maxspeed"]
             maxspeed = int(maxspeed_value) if isinstance(maxspeed_value, str) and maxspeed_value.isdigit() else maxspeed
         graph.edges[edge].update({"maxspeed": maxspeed, "weight": graph.edges[edge]["length"] / maxspeed})
+
+    print(f"Graph initialized with {len(graph.nodes)} nodes and {len(graph.edges)} edges.")
     return graph
