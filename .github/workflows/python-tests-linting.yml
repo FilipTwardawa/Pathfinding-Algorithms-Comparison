@@ -3,43 +3,43 @@ name: Python Tests and Linting
 on:
   push:
     branches:
-      - feature
+      - feature/update-structureAndTesting  
   pull_request:
     branches:
-      - feature
+      - feature/update-structureAndTesting  
 
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository
+      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Python environment
+      # Step 2: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
 
-      # Install dependencies from requirements.txt
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Run unit tests with coverage
+      # Step 4: Run unit tests with coverage
       - name: Run tests with coverage
-        run: pytest --cov=. tests/
+        run: pytest --cov=. test_algorithms.py  # Explicitly reference the file in root
 
-      # Generate coverage report
+      # Step 5: Upload coverage report
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
           path: .coverage
 
-      # Run pylint
+      # Step 6: Run pylint
       - name: Run pylint
         run: |
-          pylint algorithms.py graph_utils.py main.py tests/test_algorithms.py
+          pylint algorithms.py graph_utils.py main.py test_algorithms.py
