@@ -1,0 +1,53 @@
+name: Python Tests and Linting
+
+on:
+  push:
+    branches:
+      - feature/update-structureAndTesting
+  pull_request:
+    branches:
+      - feature/update-structureAndTesting
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      # Install dependencies for testing and linting
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov pylint
+
+      # Run unit tests with coverage
+      - name: Run tests with coverage
+        run: pytest --cov=. tests/
+
+      # Generate coverage report
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: .coverage
+
+      # Run linting with pylint
+      - name: Run pylint
+        run: |
+          pylint algorithms.py graph_utils.py main.py test_algorithms.py
+
+      # Optional: Linting with Super-Linter
+      - name: Linting with Super-Linter
+        uses: github/super-linter@v5
+        env:
+          VALIDATE_PYTHON_PYLINT: true
+          DEFAULT_BRANCH: feature/update-structureAndTesting
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
