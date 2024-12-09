@@ -3,10 +3,10 @@ name: Python Tests and Linting
 on:
   push:
     branches:
-      - feature
+      - feature/update-structureAndTesting
   pull_request:
     branches:
-      - feature
+      - feature/update-structureAndTesting
 
 jobs:
   lint-and-test:
