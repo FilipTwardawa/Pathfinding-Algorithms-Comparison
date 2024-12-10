@@ -19,6 +19,12 @@ class BFSAlgorithm:
         self.visualizer = visualizer
         self.styler = styler
 
+    def get_graph(self):
+        """
+        Returns inserted graph.
+        """
+        return self.graph
+
     def execute(self, start: int, end: int, plot: bool = False):
         """
         Executes BFS from start to end with enhanced debugging.
@@ -93,6 +99,12 @@ class DijkstraAlgorithm:
         self.visualizer = visualizer
         self.styler = styler
 
+    def get_graph(self):
+        """
+        Returns inserted graph.
+        """
+        return self.graph
+
     def execute(self, start: int, end: int, plot: bool = False):
         """Executes Dijkstra's algorithm from start to end."""
         self.graph.nodes[start]["distance"] = 0
@@ -135,6 +147,12 @@ class AStarAlgorithm:
         self.graph = graph
         self.visualizer = visualizer
         self.styler = styler
+
+    def get_heuristic(self, start: int, end: int) -> float:
+        """
+        Return heuristic for start and end points.
+        """
+        return self._heuristic(start, end)
 
     def execute(self, start: int, end: int, plot: bool = False):
         """Executes A* algorithm from start to end."""
@@ -186,6 +204,12 @@ class PathReconstructor:
         self.graph = graph
         self.visualizer = visualizer
         self.styler = styler
+
+    def get_graph(self):
+        """
+        Returns inserted graph.
+        """
+        return self.graph
 
     def reconstruct_path(self, start: int, end: int, plot: bool = False):
         """Reconstructs the path from end to start."""

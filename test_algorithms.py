@@ -1,17 +1,17 @@
 """Test file for implemented algorithms and graph."""
 
+import random
+from networkx.algorithms.components import connected_components
 from graph_utils import initialize_graph, GraphProcessor, GraphStyler, GraphVisualizer
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
-from networkx.algorithms.components import connected_components
 
-import random
+
 def test_initialize_graph():
     """Tests graph initialization - graph, nodes, and edges must exist."""
     graph = initialize_graph("Gliwice, Poland")
     assert graph is not None, "Graph not initialized."
     assert len(graph.nodes) > 0, "Graph must have nodes."
     assert len(graph.edges) > 0, "Graph must have edges."
-
 
 
 def test_bfs_algorithm():
@@ -35,7 +35,10 @@ def test_bfs_algorithm():
 
     bfs = BFSAlgorithm(graph, visualizer, styler)
     bfs.execute(start, end)
-    assert graph.nodes[end]["visited"], f"BFS failed to visit the end node from start {start} to end {end}."
+    assert graph.nodes[end]["visited"], \
+        f"BFS failed to visit the end node from start {start} to end {end}."
+
+
 def test_dijkstra_algorithm():
     """Tests Dijkstra algorithm - end point must not have infinite cost."""
     graph = initialize_graph("Gliwice, Poland")
@@ -116,7 +119,9 @@ def test_shortest_path_dijkstra():
         current = graph.nodes[current]["previous"]
     path.reverse()
 
-    path_weight = sum(graph.edges[(path[i], path[i + 1], 0)]["weight"] for i in range(len(path) - 1))
+    path_weight = sum(
+        graph.edges[(path[i], path[i + 1], 0)]["weight"] for i in range(len(path) - 1)
+    )
     assert path_weight == graph.nodes[end]["distance"], "Dijkstra did not find the shortest path."
 
 
@@ -134,7 +139,7 @@ def test_heuristic_astar():
     end = list(graph.nodes)[-1]
 
     astar.execute(start, end)
-    heuristic_start_to_end = astar._heuristic(start, end)
+    heuristic_start_to_end = astar.get_heuristic(start, end)
     assert heuristic_start_to_end > 0, "Heuristic value should be greater than 0."
     assert heuristic_start_to_end < float("inf"), "Heuristic value should not be infinite."
 

@@ -44,9 +44,13 @@ class GraphVisualizer:
         fig, _ = ox.plot_graph(
             self.graph,
             node_size=[self.graph.nodes[node].get("size", 0) for node in self.graph.nodes],
-            edge_color=[self.graph.edges[edge].get("color", "#2432B0") for edge in self.graph.edges],
+            edge_color=[
+                self.graph.edges[edge].get("color", "#2432B0") for edge in self.graph.edges
+            ],
             edge_alpha=[self.graph.edges[edge].get("alpha", 0.3) for edge in self.graph.edges],
-            edge_linewidth=[self.graph.edges[edge].get("linewidth", 0.5) for edge in self.graph.edges],
+            edge_linewidth=[
+                self.graph.edges[edge].get("linewidth", 0.5) for edge in self.graph.edges
+            ],
             node_color="white",
             bgcolor="#0F1126",
             show=False,
@@ -120,8 +124,11 @@ def initialize_graph(place_name: str):
         maxspeed = 40
         if "maxspeed" in graph.edges[edge]:
             maxspeed_value = graph.edges[edge]["maxspeed"]
-            maxspeed = int(maxspeed_value) if isinstance(maxspeed_value, str) and maxspeed_value.isdigit() else maxspeed
-        graph.edges[edge].update({"maxspeed": maxspeed, "weight": graph.edges[edge]["length"] / maxspeed})
+            if isinstance(maxspeed_value, str) and maxspeed_value.isdigit():
+                maxspeed = int(maxspeed_value)
+        graph.edges[edge].update(
+            {"maxspeed": maxspeed, "weight": graph.edges[edge]["length"] / maxspeed}
+        )
 
     print(f"Graph initialized with {len(graph.nodes)} nodes and {len(graph.edges)} edges.")
     return graph
