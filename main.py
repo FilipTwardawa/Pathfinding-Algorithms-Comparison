@@ -26,7 +26,7 @@ def main():
     # BFS
     print("Running BFS...")
     bfs = BFSAlgorithm(graph, visualizer, styler)
-    bfs.execute(start, end, plot=True)
+    result_b = bfs.execute(start, end, plot=True)
     reconstructor = PathReconstructor(graph, visualizer, styler)
     reconstructor.reconstruct_path(start, end, plot=True)
     visualizer.save_gif("bfs_animation.gif")
@@ -39,7 +39,7 @@ def main():
     # Dijkstra
     print("Running Dijkstra...")
     dijkstra = DijkstraAlgorithm(graph, visualizer, styler)
-    dijkstra.execute(start, end, plot=True)
+    result_d = dijkstra.execute(start, end, plot=True)
     reconstructor.reconstruct_path(start, end, plot=True)
     visualizer.save_gif("dijkstra_animation.gif")
     print("Dijkstra completed. Animation saved as 'dijkstra_animation.gif'.")
@@ -51,10 +51,20 @@ def main():
     # A*
     print("Running A*...")
     astar = AStarAlgorithm(graph, visualizer, styler)
-    astar.execute(start, end, plot=True)
+    result_a = astar.execute(start, end, plot=True)
     reconstructor.reconstruct_path(start, end, plot=True)
     visualizer.save_gif("astar_animation.gif")
     print("A* completed. Animation saved as 'astar_animation.gif'.")
+
+    print(f"BFS path: {result_b[0]}")
+    print(f"BFS cost: {result_b[1]}")
+    print(f"BFS time: {result_b[2]}")
+    print(f"Dijkstra path: {result_d[0]}")
+    print(f"Dijkstra cost: {result_d[1]}")
+    print(f"Dijkstra time: {result_d[2]}")
+    print(f"A* path: {result_a[0]}")
+    print(f"A* cost: {result_a[1]}")
+    print(f"A* time: {result_a[2]}")
 
 
 if __name__ == "__main__":
