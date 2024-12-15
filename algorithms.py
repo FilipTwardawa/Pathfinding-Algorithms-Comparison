@@ -43,12 +43,10 @@ class BFSAlgorithm:
         queue = [(0, start)]
         step = 0
 
-        print(f"Starting BFS from {start} to {end}.")
         while queue:
             current_distance, current_node = queue.pop(0)
 
             if current_node == end:
-                print(f"End node {end} reached.")
                 self.graph.nodes[end][
                     "visited"
                 ] = True  # Explicitly mark the end node as visited
