@@ -154,6 +154,10 @@ def initialize_graph(place_name: str):
             {"maxspeed": maxspeed, "weight": graph.edges[edge]["length"] / maxspeed}
         )
 
+    # Set names for nodes
+    for num, node in enumerate(graph.nodes):
+        graph.nodes[node]["name"] = f"{num}"
+
     print(f"Graph initialized with {len(graph.nodes)} nodes and {len(graph.edges)} edges.")
     return graph
 

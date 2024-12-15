@@ -26,7 +26,8 @@ class BFSAlgorithm:
         """
         return self.graph
 
-    def execute(self, start: int, end: int, plot: bool = False) -> tuple[list, float, float]:
+    def execute(self, start: int, end: int, plot: bool = False) -> \
+        tuple[list, float, float, int, int]:
         """
         Executes BFS from start to end with enhanced debugging.
         :param start: The starting node.
@@ -55,10 +56,14 @@ class BFSAlgorithm:
                     self.visualizer.capture_frame()
                 path = []
                 while not self.graph.nodes[current_node]["previous"] is None:
-                    path.append(current_node)
+                    path.append(self.graph.nodes[current_node]["name"])
                     current_node = self.graph.nodes[current_node]["previous"]
+                end_depth = len(path) - 1
+                visited_nodes = [
+                    node for node in self.graph.nodes if self.graph.nodes[node]["visited"]
+                ]
                 time_end = time() - time_start
-                return (path[::-1], current_distance, time_end)
+                return (path[::-1], current_distance, time_end, end_depth, len(visited_nodes))
 
             # Process the current node if it's not visited
             if not self.graph.nodes[current_node]["visited"]:
@@ -80,7 +85,7 @@ class BFSAlgorithm:
             ]
             print(f"Visited nodes: {visited_nodes}")
             print(f"Total visited nodes: {len(visited_nodes)}")
-        return ([-1], -1, time() - time_start)
+        return ([-1], -1, time() - time_start, -1, -1)
 
     def _process_edge(self, edge: Tuple[int, int, int], current_distance: float, queue: list):
         """
@@ -117,7 +122,8 @@ class DijkstraAlgorithm:
         """
         return self.graph
 
-    def execute(self, start: int, end: int, plot: bool = False) -> tuple[list, float, float]:
+    def execute(self, start: int, end: int, plot: bool = False) -> \
+        tuple[list, float, float, int, int]:
         """Executes Dijkstra's algorithm from start to end."""
         time_start = time()
         self.graph.nodes[start]["distance"] = 0
@@ -131,10 +137,14 @@ class DijkstraAlgorithm:
             if current_node == end:
                 path = []
                 while not self.graph.nodes[current_node]["previous"] is None:
-                    path.append(current_node)
+                    path.append(self.graph.nodes[current_node]["name"])
                     current_node = self.graph.nodes[current_node]["previous"]
+                end_depth = len(path) - 1
+                visited_nodes = [
+                    node for node in self.graph.nodes if self.graph.nodes[node]["visited"]
+                ]
                 time_end = time() - time_start
-                return (path[::-1], current_distance, time_end)
+                return (path[::-1], current_distance, time_end, end_depth, len(visited_nodes))
 
             if not self.graph.nodes[current_node]["visited"]:
                 self.graph.nodes[current_node]["visited"] = True
@@ -144,7 +154,7 @@ class DijkstraAlgorithm:
                 if plot and step % 10 == 0:
                     self.visualizer.capture_frame()
                 step += 1
-        return ([-1], -1, time() - time_start)
+        return ([-1], -1, time() - time_start, -1, -1)
 
     def _process_edge(
         self, edge: Tuple[int, int, int], current_distance: float, pq: list
@@ -174,7 +184,8 @@ class AStarAlgorithm:
         """
         return self._heuristic(start, end)
 
-    def execute(self, start: int, end: int, plot: bool = False) -> tuple[list, float, float]:
+    def execute(self, start: int, end: int, plot: bool = False) -> \
+        tuple[list, float, float, int, int]:
         """Executes A* algorithm from start to end."""
         time_start = time()
         self.graph.nodes[start]["previous"] = None
@@ -189,10 +200,14 @@ class AStarAlgorithm:
             if current_node == end:
                 path = []
                 while not self.graph.nodes[current_node]["previous"] is None:
-                    path.append(current_node)
+                    path.append(self.graph.nodes[current_node]["name"])
                     current_node = self.graph.nodes[current_node]["previous"]
+                end_depth = len(path) - 1
+                visited_nodes = [
+                    node for node in self.graph.nodes if self.graph.nodes[node]["visited"]
+                ]
                 time_end = time() - time_start
-                return (path[::-1], current_distance, time_end)
+                return (path[::-1], current_distance, time_end, end_depth, len(visited_nodes))
 
             if not self.graph.nodes[current_node]["visited"]:
                 self.graph.nodes[current_node]["visited"] = True
@@ -202,7 +217,7 @@ class AStarAlgorithm:
                 if plot and step % 10 == 0:
                     self.visualizer.capture_frame()
                 step += 1
-        return ([-1], -1, time() - time_start)
+        return ([-1], -1, time() - time_start, -1, -1)
 
     def _process_edge(self, edge: Tuple[int, int, int], end: int, pq: list):
         """Processes an edge during A* traversal."""

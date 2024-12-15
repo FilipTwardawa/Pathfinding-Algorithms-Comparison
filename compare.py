@@ -46,16 +46,22 @@ def main():
     print(f"BFS path: {result_b[0]}")
     print(f"BFS cost: {result_b[1]}")
     print(f"BFS time: {result_b[2]}")
+    print(f"BFS path steps: {result_b[3]}")
+    print(f"BFS visited nodes: {result_b[4]}")
 
     print("Dijkstra results: ")
     print(f"Dijkstra path: {result_d[0]}")
     print(f"Dijkstra cost: {result_d[1]}")
     print(f"Dijkstra time: {result_d[2]}")
+    print(f"Dijkstra path steps: {result_d[3]}")
+    print(f"Dijkstra visited nodes: {result_d[4]}")
 
     print("A* results: ")
     print(f"A* path: {result_a[0]}")
     print(f"A* cost: {result_a[1]}")
     print(f"A* time: {result_a[2]}")
+    print(f"A* path steps: {result_a[3]}")
+    print(f"A* visited nodes: {result_a[4]}")
 
     print("All algorithms completed.")
 
