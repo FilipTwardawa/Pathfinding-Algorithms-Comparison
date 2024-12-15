@@ -2,6 +2,7 @@
 from graph_utils import initialize_graph_with_distant_points, GraphStyler, GraphProcessor
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
 
+
 def main():
     """Creates an example graph and runs pathfinding algorithms."""
     # Inicjalizacja grafu i węzłów startowych/końcowych
@@ -64,6 +65,7 @@ def main():
     print(f"A* visited nodes: {result_a[4]}")
 
     print("All algorithms completed.")
+
 
 if __name__ == "__main__":
     main()

@@ -27,7 +27,7 @@ class BFSAlgorithm:
         return self.graph
 
     def execute(self, start: int, end: int, plot: bool = False) -> \
-        tuple[list, float, float, int, int]:
+            tuple[list, float, float, int, int]:
         """
         Executes BFS from start to end with enhanced debugging.
         :param start: The starting node.
@@ -123,7 +123,7 @@ class DijkstraAlgorithm:
         return self.graph
 
     def execute(self, start: int, end: int, plot: bool = False) -> \
-        tuple[list, float, float, int, int]:
+            tuple[list, float, float, int, int]:
         """Executes Dijkstra's algorithm from start to end."""
         time_start = time()
         self.graph.nodes[start]["distance"] = 0
@@ -185,7 +185,7 @@ class AStarAlgorithm:
         return self._heuristic(start, end)
 
     def execute(self, start: int, end: int, plot: bool = False) -> \
-        tuple[list, float, float, int, int]:
+            tuple[list, float, float, int, int]:
         """Executes A* algorithm from start to end."""
         time_start = time()
         self.graph.nodes[start]["previous"] = None
