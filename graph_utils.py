@@ -4,6 +4,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import osmnx as ox
 import networkx as nx
+import random
 
 
 class GraphStyler:
@@ -132,3 +133,24 @@ def initialize_graph(place_name: str):
 
     print(f"Graph initialized with {len(graph.nodes)} nodes and {len(graph.edges)} edges.")
     return graph
+
+
+def select_distant_nodes(graph, min_distance=32000):
+    """Select two nodes in the graph that are at least min_distance apart."""
+    nodes = list(graph.nodes)
+    while True:
+        start = random.choice(nodes)
+        end = random.choice(nodes)
+        if start != end:
+            try:
+                distance = nx.shortest_path_length(graph, source=start, target=end, weight='length')
+                if distance >= min_distance:
+                    return start, end
+            except nx.NetworkXNoPath:
+                continue
+
+
+def initialize_graph_with_distant_points(place_name="Warsaw, Poland"):
+    graph = initialize_graph(place_name)
+    start, end = select_distant_nodes(graph)
+    return graph, start, end

@@ -1,8 +1,6 @@
-import random
 import matplotlib.pyplot as plt
-from graph_utils import initialize_graph, GraphStyler, GraphProcessor
+from graph_utils import initialize_graph_with_distant_points, GraphStyler, GraphProcessor
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
-
 
 def plot_comparisons(results, save_path=None):
     """Create enhanced bar charts for cost and execution time comparisons."""
@@ -69,19 +67,14 @@ def plot_comparisons(results, save_path=None):
 
     plt.show()
 
-
 def main():
     """Creates an example graph and runs pathfinding algorithms with visualizations."""
-    # Ustawienie miejsca, dla którego generujemy graf
-    place = "Gliwice, Poland"
-    graph = initialize_graph(place)
+    # Inicjalizacja grafu i węzłów startowych/końcowych
+    graph, start_node, end_node = initialize_graph_with_distant_points("Warsaw, Poland")
 
-    # Inicjalizacja obiektów do stylizacji i wizualizacji
+    # Inicjalizacja obiektów do stylizacji
     styler = GraphStyler()
 
-    # Losowy wybór węzłów startowego i końcowego
-    start_node = random.choice(list(graph.nodes))
-    end_node = random.choice(list(graph.nodes))
     print(f"Start: {start_node}, End: {end_node}")
 
     # Przechowuje wyniki algorytmów
@@ -116,7 +109,6 @@ def main():
 
     # Visualize comparisons and save charts
     plot_comparisons(results, save_path="algorithm_comparison")
-
 
 if __name__ == "__main__":
     main()

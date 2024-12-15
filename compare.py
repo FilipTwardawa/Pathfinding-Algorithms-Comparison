@@ -1,22 +1,15 @@
 """Example file using implemented algorithms to compare results."""
-import random
-from graph_utils import initialize_graph, GraphStyler, GraphProcessor, GraphVisualizer
+from graph_utils import initialize_graph_with_distant_points, GraphStyler, GraphProcessor
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
-
 
 def main():
     """Creates an example graph and runs pathfinding algorithms."""
-    # Ustawienie miejsca, dla którego generujemy graf
-    place = "Gliwice, Poland"
-    graph = initialize_graph(place)
+    # Inicjalizacja grafu i węzłów startowych/końcowych
+    graph, start_node, end_node = initialize_graph_with_distant_points("Warsaw, Poland")
 
-    # Inicjalizacja obiektów do stylizacji i wizualizacji
+    # Inicjalizacja obiektów do stylizacji
     styler = GraphStyler()
-    visualizer = GraphVisualizer(graph)
 
-    # Losowy wybór węzłów startowego i końcowego
-    start_node = random.choice(list(graph.nodes))
-    end_node = random.choice(list(graph.nodes))
     print(f"Start: {start_node}, End: {end_node}")
 
     # Inicjalizacja węzłów i krawędzi grafu
@@ -25,7 +18,7 @@ def main():
 
     # BFS
     print("Running BFS...")
-    bfs = BFSAlgorithm(graph, visualizer, styler)
+    bfs = BFSAlgorithm(graph, None, styler)
     result_b = bfs.execute(start_node, end_node, plot=False)
     print("BFS completed.")
 
@@ -35,7 +28,7 @@ def main():
 
     # Dijkstra
     print("Running Dijkstra...")
-    dijkstra = DijkstraAlgorithm(graph, visualizer, styler)
+    dijkstra = DijkstraAlgorithm(graph, None, styler)
     result_d = dijkstra.execute(start_node, end_node, plot=False)
     print("Dijkstra completed.")
 
@@ -45,7 +38,7 @@ def main():
 
     # A*
     print("Running A*...")
-    astar = AStarAlgorithm(graph, visualizer, styler)
+    astar = AStarAlgorithm(graph, None, styler)
     result_a = astar.execute(start_node, end_node, plot=False)
     print("A* completed.")
 
@@ -65,7 +58,6 @@ def main():
     print(f"A* time: {result_a[2]}")
 
     print("All algorithms completed.")
-
 
 if __name__ == "__main__":
     main()
