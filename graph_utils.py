@@ -1,10 +1,16 @@
-"""File containing graph's classes and methods."""
-from io import BytesIO
+"""
+Graph Utilities Module
+
+This module provides functions for graph initialization, styling, and processing
+to support pathfinding algorithms and visualizations.
+"""
+
+import random
+from io import BytesIO  # Fixed missing import for BytesIO
 from PIL import Image
 import matplotlib.pyplot as plt
 import osmnx as ox
 import networkx as nx
-import random
 
 
 class GraphStyler:
@@ -33,6 +39,12 @@ class GraphVisualizer:
     """Manages visualization and GIF creation for a graph."""
 
     def __init__(self, graph):
+        """
+        Initializes the visualizer with a graph.
+
+        Args:
+            graph (networkx.Graph): The graph to visualize.
+        """
         self.graph = graph
         self.frames = []  # Stores frames for GIF generation
 
@@ -49,9 +61,8 @@ class GraphVisualizer:
                 self.graph.edges[edge].get("color", "#2432B0") for edge in self.graph.edges
             ],
             edge_alpha=[self.graph.edges[edge].get("alpha", 0.3) for edge in self.graph.edges],
-            edge_linewidth=[
-                self.graph.edges[edge].get("linewidth", 0.5) for edge in self.graph.edges
-            ],
+            edge_linewidth=
+            [self.graph.edges[edge].get("linewidth", 0.5) for edge in self.graph.edges],
             node_color="white",
             bgcolor="#0F1126",
             show=False,
@@ -66,7 +77,12 @@ class GraphVisualizer:
         plt.close(fig)
 
     def save_gif(self, gif_filename: str, duration: int = 100):
-        """Generates a GIF from the captured frames."""
+        """Generates a GIF from the captured frames.
+
+        Args:
+            gif_filename (str): The name of the GIF file to save.
+            duration (int): Duration of each frame in milliseconds.
+        """
         if self.frames:
             self.frames[0].save(
                 gif_filename,
@@ -109,7 +125,14 @@ class GraphProcessor:
 
 
 def initialize_graph(place_name: str):
-    """Initializes the graph, ensures connectivity, and sets edge weights."""
+    """Initializes the graph, ensures connectivity, and sets edge weights.
+
+    Args:
+        place_name (str): Name of the location to generate the graph.
+
+    Returns:
+        networkx.Graph: A graph initialized for the given place.
+    """
     print(f"Initializing graph for: {place_name}...")
     graph = ox.graph_from_place(place_name, network_type="drive")
 
@@ -136,7 +159,15 @@ def initialize_graph(place_name: str):
 
 
 def select_distant_nodes(graph, min_distance=32000):
-    """Select two nodes in the graph that are at least min_distance apart."""
+    """Select two nodes in the graph that are at least min_distance apart.
+
+    Args:
+        graph (networkx.Graph): The graph to search within.
+        min_distance (int): Minimum distance between the nodes.
+
+    Returns:
+        tuple: A pair of node identifiers.
+    """
     nodes = list(graph.nodes)
     while True:
         start = random.choice(nodes)
@@ -151,6 +182,14 @@ def select_distant_nodes(graph, min_distance=32000):
 
 
 def initialize_graph_with_distant_points(place_name="Warsaw, Poland"):
+    """Initializes a graph and selects distant points.
+
+    Args:
+        place_name (str): Name of the location to generate the graph.
+
+    Returns:
+        tuple: A graph and two distant nodes.
+    """
     graph = initialize_graph(place_name)
     start, end = select_distant_nodes(graph)
     return graph, start, end
