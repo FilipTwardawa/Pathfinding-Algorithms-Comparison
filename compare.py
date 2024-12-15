@@ -11,7 +11,7 @@ def main():
     # Inicjalizacja obiektów do stylizacji
     styler = GraphStyler()
 
-    print(f"Start: {start_node}, End: {end_node}")
+    print(f"Start: {graph.nodes[start_node]['name']}, End: {graph.nodes[end_node]['name']}")
 
     # Inicjalizacja węzłów i krawędzi grafu
     GraphProcessor.initialize_nodes(graph)

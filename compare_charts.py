@@ -1,6 +1,8 @@
+"""File using implemented algorithms to make plots."""
 import matplotlib.pyplot as plt
 from graph_utils import initialize_graph_with_distant_points, GraphStyler, GraphProcessor
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
+
 
 def plot_comparisons(results, save_path=None):
     """Create enhanced bar charts for cost and execution time comparisons."""
@@ -22,11 +24,11 @@ def plot_comparisons(results, save_path=None):
     plt.yticks(fontsize=10)
 
     # Add values on top of bars
-    for bar in bars:
+    for ba in bars:
         plt.text(
-            bar.get_x() + bar.get_width() / 2,
-            bar.get_height(),
-            f"{bar.get_height():.2f}",
+            ba.get_x() + ba.get_width() / 2,
+            ba.get_height(),
+            f"{ba.get_height():.2f}",
             ha="center",
             va="bottom",
             fontsize=10,
@@ -51,11 +53,11 @@ def plot_comparisons(results, save_path=None):
     plt.yticks(fontsize=10)
 
     # Add values on top of bars
-    for bar in bars:
+    for ba in bars:
         plt.text(
-            bar.get_x() + bar.get_width() / 2,
-            bar.get_height(),
-            f"{bar.get_height():.4f}",
+            ba.get_x() + ba.get_width() / 2,
+            ba.get_height(),
+            f"{ba.get_height():.4f}",
             ha="center",
             va="bottom",
             fontsize=10,
@@ -80,11 +82,11 @@ def plot_comparisons(results, save_path=None):
     plt.yticks(fontsize=10)
 
     # Add values on top of bars
-    for bar in bars:
+    for ba in bars:
         plt.text(
-            bar.get_x() + bar.get_width() / 2,
-            bar.get_height(),
-            f"{bar.get_height():.4f}",
+            ba.get_x() + ba.get_width() / 2,
+            ba.get_height(),
+            f"{ba.get_height():.4f}",
             ha="center",
             va="bottom",
             fontsize=10,
@@ -109,11 +111,11 @@ def plot_comparisons(results, save_path=None):
     plt.yticks(fontsize=10)
 
     # Add values on top of bars
-    for bar in bars:
+    for ba in bars:
         plt.text(
-            bar.get_x() + bar.get_width() / 2,
-            bar.get_height(),
-            f"{bar.get_height():.4f}",
+            ba.get_x() + ba.get_width() / 2,
+            ba.get_height(),
+            f"{ba.get_height():.4f}",
             ha="center",
             va="bottom",
             fontsize=10,
@@ -126,6 +128,7 @@ def plot_comparisons(results, save_path=None):
         print(f"Count of visited nodes comparison chart saved as {save_path}_visited_nodes.png")
 
     plt.show()
+
 
 def main():
     """Creates an example graph and runs pathfinding algorithms with visualizations."""
@@ -141,37 +144,38 @@ def main():
     results = {}
 
     # BFS
-    print("Running BFS...")
+    print("Running BFS algorithm...")
     GraphProcessor.initialize_nodes(graph)
     GraphProcessor.initialize_edges(graph, styler)
     bfs = BFSAlgorithm(graph, None, styler)
     result_b = bfs.execute(start_node, end_node, plot=False)
     results["BFS"] = {"path": result_b[0], "cost": result_b[1], "time": result_b[2],
-        "depth": result_b[3], "visited": result_b[4]}
+                      "depth": result_b[3], "visited": result_b[4]}
     print("BFS completed.")
 
     # Dijkstra
-    print("Running Dijkstra...")
+    print("Running Dijkstra algorithm...")
     GraphProcessor.initialize_nodes(graph)
     GraphProcessor.initialize_edges(graph, styler)
     dijkstra = DijkstraAlgorithm(graph, None, styler)
     result_d = dijkstra.execute(start_node, end_node, plot=False)
     results["Dijkstra"] = {"path": result_d[0], "cost": result_d[1], "time": result_d[2],
-        "depth": result_d[3], "visited": result_d[4]}
+                           "depth": result_d[3], "visited": result_d[4]}
     print("Dijkstra completed.")
 
     # A*
-    print("Running A*...")
+    print("Running A* algorithm...")
     GraphProcessor.initialize_nodes(graph)
     GraphProcessor.initialize_edges(graph, styler)
     astar = AStarAlgorithm(graph, None, styler)
     result_a = astar.execute(start_node, end_node, plot=False)
     results["A*"] = {"path": result_a[0], "cost": result_a[1], "time": result_a[2],
-        "depth": result_a[3], "visited": result_a[4]}
+                     "depth": result_a[3], "visited": result_a[4]}
     print("A* completed.")
 
     # Visualize comparisons and save charts
     plot_comparisons(results, save_path="algorithm_comparison")
+
 
 if __name__ == "__main__":
     main()
