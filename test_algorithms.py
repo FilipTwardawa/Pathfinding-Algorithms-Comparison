@@ -1,22 +1,17 @@
 """
-Test Algorithms Module
-
-This module contains unit tests for various graph-related algorithms, including:
-- BFS (Breadth-First Search)
-- Dijkstra's Algorithm
-- A* (A-star) Algorithm
+Unit tests for pathfinding algorithms and graph utilities.
 """
 
 import random
 from networkx.algorithms.components import connected_components
-from graph_utils import initialize_graph, GraphProcessor, GraphStyler
+from graph_utils import initialize_graph, GraphProcessor
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
-from chart_utils import generate_bar_chart
+from chart_utils import plot_bar_chart
 
 
 def test_initialize_graph():
     """
-    Verifies that a graph is properly initialized from a given location.
+    Tests graph initialization to ensure nodes and edges exist.
     """
     graph = initialize_graph("Gliwice, Poland")
     assert graph is not None, "Graph not initialized."
@@ -29,18 +24,15 @@ def test_bfs_algorithm():
     Tests the BFS algorithm on a sample graph.
     """
     graph = initialize_graph("Gliwice, Poland")
-    styler = GraphStyler()
-
     GraphProcessor.initialize_nodes(graph)
-    GraphProcessor.initialize_edges(graph, styler)
 
     components = list(connected_components(graph.to_undirected()))
     start = random.choice(list(components[0]))
     end = random.choice(list(components[0]))
 
-    bfs = BFSAlgorithm(graph, None, styler)
-    bfs.execute(start, end)
-    assert graph.nodes[end]["visited"], "BFS failed to visit the end node."
+    bfs = BFSAlgorithm(graph)
+    path, _, _, _, _ = bfs.execute(start, end)
+    assert end in path, "BFS failed to visit the end node."
 
 
 def test_dijkstra_algorithm():
@@ -48,44 +40,43 @@ def test_dijkstra_algorithm():
     Tests Dijkstra's algorithm to find the shortest path.
     """
     graph = initialize_graph("Gliwice, Poland")
-    styler = GraphStyler()
-
     GraphProcessor.initialize_nodes(graph)
-    GraphProcessor.initialize_edges(graph, styler)
 
-    dijkstra = DijkstraAlgorithm(graph, None, styler)
+    dijkstra = DijkstraAlgorithm(graph)
     start = list(graph.nodes)[0]
     end = list(graph.nodes)[-1]
 
-    dijkstra.execute(start, end)
-    assert graph.nodes[end]["distance"] < float("inf"), "Dijkstra failed to find a path."
+    path, cost, _, _, _ = dijkstra.execute(start, end)
+    assert cost < float("inf"), "Dijkstra failed to find a path."
+    assert end in path, "Dijkstra failed to include the end node in the path."
 
 
 def test_astar_algorithm():
     """
-    Tests the A* algorithm with a heuristic function.
+    Tests the A* algorithm with a heuristic function to ensure a valid path is found.
     """
     graph = initialize_graph("Gliwice, Poland")
-    styler = GraphStyler()
-
     GraphProcessor.initialize_nodes(graph)
-    GraphProcessor.initialize_edges(graph, styler)
 
-    astar = AStarAlgorithm(graph, None, styler)
-    start = list(graph.nodes)[0]
-    end = list(graph.nodes)[-1]
+    for node in graph.nodes:
+        graph.nodes[node]["x"] = random.uniform(0, 1)
+        graph.nodes[node]["y"] = random.uniform(0, 1)
 
-    astar.execute(start, end)
-    assert graph.nodes[end]["f_score"] < float("inf"), "A* failed to find a path."
+    astar = AStarAlgorithm(graph)
+    path, cost, _, _, _ = astar.execute(start=list(graph.nodes)[0], end=list(graph.nodes)[-1])
+
+    assert cost < float("inf"), "A* failed to find a path."
+    assert len(path) > 0, "A* failed to return a valid path."
 
 
 def test_chart_generation():
     """
-    Demonstrates chart generation with sample data.
+    Tests the chart generation utility to ensure bar charts are created correctly.
     """
     results = {
-        "BFS": {"cost": 10, "time": 0.02},
-        "Dijkstra": {"cost": 8, "time": 0.01},
-        "A*": {"cost": 7, "time": 0.015},
+        "BFS": {"cost": 10, "time": 0.1},
+        "Dijkstra": {"cost": 8, "time": 0.05},
+        "A*": {"cost": 9, "time": 0.07},
     }
-    generate_bar_chart(results, "Algorithm Comparison", "Cost")
+    plot_bar_chart(results["BFS"], "Cost Comparison", "Total Cost")
+    plot_bar_chart(results["Dijkstra"], "Execution Time Comparison", "Time (seconds)")

@@ -92,7 +92,7 @@ def initialize_graph(place_name: str):
     return graph
 
 
-def select_distant_nodes(graph, min_distance=5):
+def select_distant_nodes(graph):
     """
     Selects two nodes in the graph that are at least the specified distance apart.
 
@@ -124,7 +124,6 @@ def initialize_graph_with_distant_points(place_name="Default Location"):
     graph = initialize_graph(place_name)
     start, end = select_distant_nodes(graph)
     return graph, start, end
-
 
 # Export the classes for use in other modules
 __all__ = ["GraphStyler", "GraphProcessor"]

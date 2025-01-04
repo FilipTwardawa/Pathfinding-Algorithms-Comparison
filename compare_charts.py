@@ -63,16 +63,20 @@ def plot_comparisons(results):
         results (dict): A dictionary containing the results of each algorithm.
     """
     generate_bar_chart(
-        {algo: results[algo]["cost"] for algo in results}, "Cost Comparison", "Total Cost"
+        {algo: results[algo]["cost"] for algo in results},
+        "Cost Comparison", "Total Cost"
     )
     generate_bar_chart(
-        {algo: results[algo]["time"] for algo in results}, "Execution Time Comparison", "Time (s)"
+        {algo: results[algo]["time"] for algo in results},
+        "Execution Time Comparison", "Time (s)"
     )
     generate_bar_chart(
-        {algo: results[algo]["depth"] for algo in results}, "Path Length Comparison", "Path Length"
+        {algo: results[algo]["depth"] for algo in results},
+        "Path Length Comparison", "Path Length"
     )
     generate_bar_chart(
-        {algo: results[algo]["visited"] for algo in results}, "Visited Nodes Comparison", "Visited Nodes"
+        {algo: results[algo]["visited"] for algo in results},
+        "Visited Nodes Comparison", "Visited Nodes"
     )
 
 
