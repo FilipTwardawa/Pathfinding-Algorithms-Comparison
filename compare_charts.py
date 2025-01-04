@@ -1,180 +1,93 @@
-"""File using implemented algorithms to make plots."""
-import matplotlib.pyplot as plt
+"""
+Comparison Charts Module
+
+This module runs pathfinding algorithms (BFS, Dijkstra, A*) on a graph and generates
+comparison charts to visualize the cost, execution time, path length, and number of visited nodes.
+"""
+
 from graph_utils import initialize_graph_with_distant_points, GraphStyler, GraphProcessor
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
+from chart_utils import generate_bar_chart
 
 
-def plot_comparisons(results, save_path=None):
-    """Create enhanced bar charts for cost and execution time comparisons."""
-    # Extract data
-    algorithms = list(results.keys())
-    costs = [results[algo]["cost"] for algo in algorithms]
-    times = [results[algo]["time"] for algo in algorithms]
-    depths = [results[algo]["depth"] for algo in algorithms]
-    visited = [results[algo]["visited"] for algo in algorithms]
+def run_algorithm(algorithm_class, graph, start_node, end_node, styler):
+    """
+    Runs a specified pathfinding algorithm on the given graph.
 
-    # Plot costs
-    plt.figure(figsize=(10, 6))
-    bars = plt.bar(algorithms, costs, color=["blue", "green", "orange"])
-    plt.title("Porównanie Kosztów", fontsize=16)
-    plt.ylabel("Koszt całkowity", fontsize=12)
-    plt.xlabel("Algorytmy", fontsize=12)
-    plt.grid(axis="y", linestyle="--", alpha=0.7)
-    plt.xticks(fontsize=10)
-    plt.yticks(fontsize=10)
+    Args:
+        algorithm_class (class): The class of the algorithm to run (e.g., BFSAlgorithm).
+        graph (networkx.Graph): The graph to run the algorithm on.
+        start_node (int): The starting node.
+        end_node (int): The target node.
+        styler (GraphStyler): The object responsible for styling nodes and edges.
 
-    # Add values on top of bars
-    for ba in bars:
-        plt.text(
-            ba.get_x() + ba.get_width() / 2,
-            ba.get_height(),
-            f"{ba.get_height():.2f}",
-            ha="center",
-            va="bottom",
-            fontsize=10,
-            color="black",
-        )
+    Returns:
+        tuple: The result of the algorithm execution.
+    """
+    GraphProcessor.initialize_nodes(graph)
+    GraphProcessor.initialize_edges(graph, styler)
+    algorithm = algorithm_class(graph, None, styler)
+    return algorithm.execute(start_node, end_node, plot=False)
 
-    # Save chart if save_path is provided
-    if save_path:
-        plt.savefig(f"{save_path}_costs.png", dpi=300)
-        print(f"Cost comparison chart saved as {save_path}_costs.png")
 
-    plt.show()
+def run_all_algorithms(graph, start_node, end_node, styler):
+    """
+    Runs BFS, Dijkstra, and A* algorithms and returns the results.
 
-    # Plot execution times
-    plt.figure(figsize=(10, 6))
-    bars = plt.bar(algorithms, times, color=["blue", "green", "orange"])
-    plt.title("Porównanie Czasu Wykonania", fontsize=16)
-    plt.ylabel("Czas (sekundy)", fontsize=12)
-    plt.xlabel("Algorytmy", fontsize=12)
-    plt.grid(axis="y", linestyle="--", alpha=0.7)
-    plt.xticks(fontsize=10)
-    plt.yticks(fontsize=10)
+    Args:
+        graph (networkx.Graph): The graph to run the algorithms on.
+        start_node (int): The starting node.
+        end_node (int): The target node.
+        styler (GraphStyler): The object responsible for styling nodes and edges.
 
-    # Add values on top of bars
-    for ba in bars:
-        plt.text(
-            ba.get_x() + ba.get_width() / 2,
-            ba.get_height(),
-            f"{ba.get_height():.4f}",
-            ha="center",
-            va="bottom",
-            fontsize=10,
-            color="black",
-        )
+    Returns:
+        dict: Results of all algorithms.
+    """
+    results = {}
+    for algo_class, algo_name in [
+        (BFSAlgorithm, "BFS"),
+        (DijkstraAlgorithm, "Dijkstra"),
+        (AStarAlgorithm, "A*"),
+    ]:
+        print(f"Running {algo_name}...")
+        results[algo_name] = run_algorithm(algo_class, graph, start_node, end_node, styler)
+        print(f"{algo_name} completed.")
+    return results
 
-    # Save chart if save_path is provided
-    if save_path:
-        plt.savefig(f"{save_path}_times.png", dpi=300)
-        print(f"Time comparison chart saved as {save_path}_times.png")
 
-    plt.show()
+def plot_comparisons(results):
+    """
+    Create bar charts for comparing the performance of algorithms.
 
-    # Plot path lengths
-    plt.figure(figsize=(10, 6))
-    bars = plt.bar(algorithms, depths, color=["blue", "green", "orange"])
-    plt.title("Liczba kroków do celu", fontsize=16)
-    plt.ylabel("Liczba kroków", fontsize=12)
-    plt.xlabel("Algorytmy", fontsize=12)
-    plt.grid(axis="y", linestyle="--", alpha=0.7)
-    plt.xticks(fontsize=10)
-    plt.yticks(fontsize=10)
-
-    # Add values on top of bars
-    for ba in bars:
-        plt.text(
-            ba.get_x() + ba.get_width() / 2,
-            ba.get_height(),
-            f"{ba.get_height():.4f}",
-            ha="center",
-            va="bottom",
-            fontsize=10,
-            color="black",
-        )
-
-    # Save chart if save_path is provided
-    if save_path:
-        plt.savefig(f"{save_path}_depths.png", dpi=300)
-        print(f"Step count comparison chart saved as {save_path}_depths.png")
-
-    plt.show()
-
-    # Plot count of visited nodes
-    plt.figure(figsize=(10, 6))
-    bars = plt.bar(algorithms, visited, color=["blue", "green", "orange"])
-    plt.title("Porównanie liczby odwiedzonych punktów", fontsize=16)
-    plt.ylabel("Liczba odwiedzonych punktów", fontsize=12)
-    plt.xlabel("Algorytmy", fontsize=12)
-    plt.grid(axis="y", linestyle="--", alpha=0.7)
-    plt.xticks(fontsize=10)
-    plt.yticks(fontsize=10)
-
-    # Add values on top of bars
-    for ba in bars:
-        plt.text(
-            ba.get_x() + ba.get_width() / 2,
-            ba.get_height(),
-            f"{ba.get_height():.4f}",
-            ha="center",
-            va="bottom",
-            fontsize=10,
-            color="black",
-        )
-
-    # Save chart if save_path is provided
-    if save_path:
-        plt.savefig(f"{save_path}_visited_nodes.png", dpi=300)
-        print(f"Count of visited nodes comparison chart saved as {save_path}_visited_nodes.png")
-
-    plt.show()
+    Args:
+        results (dict): A dictionary containing the results of each algorithm.
+    """
+    generate_bar_chart(
+        {algo: results[algo]["cost"] for algo in results}, "Cost Comparison", "Total Cost"
+    )
+    generate_bar_chart(
+        {algo: results[algo]["time"] for algo in results}, "Execution Time Comparison", "Time (s)"
+    )
+    generate_bar_chart(
+        {algo: results[algo]["depth"] for algo in results}, "Path Length Comparison", "Path Length"
+    )
+    generate_bar_chart(
+        {algo: results[algo]["visited"] for algo in results}, "Visited Nodes Comparison", "Visited Nodes"
+    )
 
 
 def main():
-    """Creates an example graph and runs pathfinding algorithms with visualizations."""
-    # Inicjalizacja grafu i węzłów startowych/końcowych
+    """
+    Main function to initialize a graph, run pathfinding algorithms, and visualize comparisons.
+    """
     graph, start_node, end_node = initialize_graph_with_distant_points("Warsaw, Poland")
-
-    # Inicjalizacja obiektów do stylizacji
     styler = GraphStyler()
 
     print(f"Start: {graph.nodes[start_node]['name']}, End: {graph.nodes[end_node]['name']}")
 
-    # Przechowuje wyniki algorytmów
-    results = {}
+    results = run_all_algorithms(graph, start_node, end_node, styler)
 
-    # BFS
-    print("Running BFS algorithm...")
-    GraphProcessor.initialize_nodes(graph)
-    GraphProcessor.initialize_edges(graph, styler)
-    bfs = BFSAlgorithm(graph, None, styler)
-    result_b = bfs.execute(start_node, end_node, plot=False)
-    results["BFS"] = {"path": result_b[0], "cost": result_b[1], "time": result_b[2],
-                      "depth": result_b[3], "visited": result_b[4]}
-    print("BFS completed.")
-
-    # Dijkstra
-    print("Running Dijkstra algorithm...")
-    GraphProcessor.initialize_nodes(graph)
-    GraphProcessor.initialize_edges(graph, styler)
-    dijkstra = DijkstraAlgorithm(graph, None, styler)
-    result_d = dijkstra.execute(start_node, end_node, plot=False)
-    results["Dijkstra"] = {"path": result_d[0], "cost": result_d[1], "time": result_d[2],
-                           "depth": result_d[3], "visited": result_d[4]}
-    print("Dijkstra completed.")
-
-    # A*
-    print("Running A* algorithm...")
-    GraphProcessor.initialize_nodes(graph)
-    GraphProcessor.initialize_edges(graph, styler)
-    astar = AStarAlgorithm(graph, None, styler)
-    result_a = astar.execute(start_node, end_node, plot=False)
-    results["A*"] = {"path": result_a[0], "cost": result_a[1], "time": result_a[2],
-                     "depth": result_a[3], "visited": result_a[4]}
-    print("A* completed.")
-
-    # Visualize comparisons and save charts
-    plot_comparisons(results, save_path="algorithm_comparison")
+    plot_comparisons(results)
 
 
 if __name__ == "__main__":

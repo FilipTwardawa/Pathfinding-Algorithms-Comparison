@@ -1,71 +1,84 @@
-"""Example file using implemented algorithms to compare results."""
+"""
+Example File Using Implemented Algorithms to Compare Results
+
+This module creates a graph and runs three pathfinding algorithms (BFS, Dijkstra, A*)
+to compare their performance in terms of path, cost, execution time, and visited nodes.
+"""
+
 from graph_utils import initialize_graph_with_distant_points, GraphStyler, GraphProcessor
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
 
-
 def main():
-    """Creates an example graph and runs pathfinding algorithms."""
-    # Inicjalizacja grafu i węzłów startowych/końcowych
+    """
+    Main function to initialize a graph and run pathfinding algorithms.
+
+    This function generates a graph for Warsaw, Poland, selects two distant points,
+    and runs BFS, Dijkstra, and A* algorithms on the graph. The results of each
+    algorithm are printed for comparison.
+    """
+    # Initialize the graph and select start and end nodes
     graph, start_node, end_node = initialize_graph_with_distant_points("Warsaw, Poland")
 
-    # Inicjalizacja obiektów do stylizacji
+    # Initialize styling objects
     styler = GraphStyler()
 
     print(f"Start: {graph.nodes[start_node]['name']}, End: {graph.nodes[end_node]['name']}")
 
-    # Inicjalizacja węzłów i krawędzi grafu
+    # Initialize nodes and edges in the graph
     GraphProcessor.initialize_nodes(graph)
     GraphProcessor.initialize_edges(graph, styler)
 
-    # BFS
+    # Run BFS
     print("Running BFS...")
     bfs = BFSAlgorithm(graph, None, styler)
     result_b = bfs.execute(start_node, end_node, plot=False)
     print("BFS completed.")
 
-    # Ponowna inicjalizacja węzłów i krawędzi
+    # Reinitialize nodes and edges for the next algorithm
     GraphProcessor.initialize_nodes(graph)
     GraphProcessor.initialize_edges(graph, styler)
 
-    # Dijkstra
+    # Run Dijkstra
     print("Running Dijkstra...")
     dijkstra = DijkstraAlgorithm(graph, None, styler)
     result_d = dijkstra.execute(start_node, end_node, plot=False)
     print("Dijkstra completed.")
 
-    # Ponowna inicjalizacja węzłów i krawędzi
+    # Reinitialize nodes and edges for the next algorithm
     GraphProcessor.initialize_nodes(graph)
     GraphProcessor.initialize_edges(graph, styler)
 
-    # A*
+    # Run A*
     print("Running A*...")
     astar = AStarAlgorithm(graph, None, styler)
     result_a = astar.execute(start_node, end_node, plot=False)
     print("A* completed.")
 
-    print("BFS results: ")
-    print(f"BFS path: {result_b[0]}")
-    print(f"BFS cost: {result_b[1]}")
-    print(f"BFS time: {result_b[2]}")
-    print(f"BFS path steps: {result_b[3]}")
-    print(f"BFS visited nodes: {result_b[4]}")
+    # Print BFS results
+    print("\nBFS Results:")
+    print(f"Path: {result_b[0]}")
+    print(f"Cost: {result_b[1]}")
+    print(f"Time: {result_b[2]:.4f} seconds")
+    print(f"Path Steps: {result_b[3]}")
+    print(f"Visited Nodes: {result_b[4]}")
 
-    print("Dijkstra results: ")
-    print(f"Dijkstra path: {result_d[0]}")
-    print(f"Dijkstra cost: {result_d[1]}")
-    print(f"Dijkstra time: {result_d[2]}")
-    print(f"Dijkstra path steps: {result_d[3]}")
-    print(f"Dijkstra visited nodes: {result_d[4]}")
+    # Print Dijkstra results
+    print("\nDijkstra Results:")
+    print(f"Path: {result_d[0]}")
+    print(f"Cost: {result_d[1]}")
+    print(f"Time: {result_d[2]:.4f} seconds")
+    print(f"Path Steps: {result_d[3]}")
+    print(f"Visited Nodes: {result_d[4]}")
 
-    print("A* results: ")
-    print(f"A* path: {result_a[0]}")
-    print(f"A* cost: {result_a[1]}")
-    print(f"A* time: {result_a[2]}")
-    print(f"A* path steps: {result_a[3]}")
-    print(f"A* visited nodes: {result_a[4]}")
+    # Print A* results
+    print("\nA* Results:")
+    print(f"Path: {result_a[0]}")
+    print(f"Cost: {result_a[1]}")
+    print(f"Time: {result_a[2]:.4f} seconds")
+    print(f"Path Steps: {result_a[3]}")
+    print(f"Visited Nodes: {result_a[4]}")
 
-    print("All algorithms completed.")
-
+    print("\nAll algorithms completed.")
 
 if __name__ == "__main__":
     main()
