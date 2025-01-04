@@ -8,7 +8,6 @@ from graph_utils import initialize_graph, GraphProcessor
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
 from chart_utils import plot_bar_chart
 
-
 def test_initialize_graph():
     """
     Tests graph initialization to ensure nodes and edges exist.

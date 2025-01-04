@@ -8,6 +8,7 @@ import heapq
 from typing import Tuple, List
 
 
+# pylint: disable=too-few-public-methods
 class BFSAlgorithm:
     """Performs BFS on a graph."""
 
@@ -34,17 +35,22 @@ class BFSAlgorithm:
                     queue.append(neighbor)
                     visited_count += 1
 
+        path = self._reconstruct_path(end)
+        time_end = time() - time_start
+        return path, len(path) - 1, time_end, len(path), visited_count
+
+    def _reconstruct_path(self, end: int) -> List[int]:
+        """Helper method to reconstruct the path."""
         path = []
         current = end
         while current is not None:
             path.append(current)
             current = self.graph.nodes[current].get("previous")
-
         path.reverse()
-        time_end = time() - time_start
-        return path, len(path) - 1, time_end, len(path), visited_count
+        return path
 
 
+# pylint: disable=too-few-public-methods
 class DijkstraAlgorithm:
     """Performs Dijkstra's algorithm on a graph."""
 
@@ -54,9 +60,7 @@ class DijkstraAlgorithm:
     def execute(self, start: int, end: int) -> Tuple[List[int], float, float, int, int]:
         """Executes Dijkstra's algorithm from start to end."""
         time_start = time()
-        distances = {node: float('inf') for node in self.graph.nodes}
-        distances[start] = 0
-        priority_queue = [(0, start)]
+        distances, priority_queue = self._initialize_dijkstra(start)
         visited_count = 0
 
         while priority_queue:
@@ -73,17 +77,29 @@ class DijkstraAlgorithm:
                     self.graph.nodes[neighbor]["previous"] = current_node
                     visited_count += 1
 
+        path = self._reconstruct_path(end)
+        time_end = time() - time_start
+        return path, distances[end], time_end, len(path), visited_count
+
+    def _initialize_dijkstra(self, start: int):
+        """Initializes Dijkstra's algorithm data structures."""
+        distances = {node: float('inf') for node in self.graph.nodes}
+        distances[start] = 0
+        priority_queue = [(0, start)]
+        return distances, priority_queue
+
+    def _reconstruct_path(self, end: int) -> List[int]:
+        """Helper method to reconstruct the path."""
         path = []
         current = end
         while current is not None:
             path.append(current)
             current = self.graph.nodes[current].get("previous")
-
         path.reverse()
-        time_end = time() - time_start
-        return path, distances[end], time_end, len(path), visited_count
+        return path
 
 
+# pylint: disable=too-few-public-methods
 class AStarAlgorithm:
     """Performs A* algorithm on a graph."""
 
@@ -99,11 +115,7 @@ class AStarAlgorithm:
     def execute(self, start: int, end: int) -> Tuple[List[int], float, float, int, int]:
         """Executes A* algorithm from start to end."""
         time_start = time()
-        open_set = [(0, start)]
-        g_scores = {node: float('inf') for node in self.graph.nodes}
-        g_scores[start] = 0
-        f_scores = {node: float('inf') for node in self.graph.nodes}
-        f_scores[start] = self.heuristic(start, end)
+        open_set, g_scores, f_scores = self._initialize_astar(start, end)
         visited_count = 0
 
         while open_set:
@@ -117,16 +129,29 @@ class AStarAlgorithm:
                 if tentative_g_score < g_scores[neighbor]:
                     g_scores[neighbor] = tentative_g_score
                     f_scores[neighbor] = tentative_g_score + self.heuristic(neighbor, end)
-                    open_set.append((f_scores[neighbor], neighbor))
+                    heapq.heappush(open_set, (f_scores[neighbor], neighbor))
                     self.graph.nodes[neighbor]["previous"] = current
                     visited_count += 1
 
+        path = self._reconstruct_path(end)
+        time_end = time() - time_start
+        return path, g_scores[end], time_end, len(path), visited_count
+
+    def _initialize_astar(self, start: int, end: int):
+        """Initializes A* algorithm data structures."""
+        open_set = [(0, start)]
+        g_scores = {node: float('inf') for node in self.graph.nodes}
+        g_scores[start] = 0
+        f_scores = {node: float('inf') for node in self.graph.nodes}
+        f_scores[start] = self.heuristic(start, end)
+        return open_set, g_scores, f_scores
+
+    def _reconstruct_path(self, end: int) -> List[int]:
+        """Helper method to reconstruct the path."""
         path = []
         current = end
         while current is not None:
             path.append(current)
             current = self.graph.nodes[current].get("previous")
-
         path.reverse()
-        time_end = time() - time_start
-        return path, g_scores[end], time_end, len(path), visited_count
+        return path
