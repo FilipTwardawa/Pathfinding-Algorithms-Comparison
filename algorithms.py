@@ -1,3 +1,7 @@
+"""
+Module containing pathfinding algorithms: BFS, Dijkstra, and A*.
+"""
+
 import math
 from time import time
 import heapq
@@ -8,19 +12,10 @@ class BFSAlgorithm:
     """Performs BFS on a graph."""
 
     def __init__(self, graph):
-        """
-        Initializes the BFS algorithm.
-        :param graph: The graph on which BFS will operate.
-        """
         self.graph = graph
 
-    def execute(self, start: int, end: int, plot: bool = False) -> Tuple[List[int], float, float, int, int]:
-        """
-        Executes BFS from start to end with enhanced debugging.
-        :param start: The starting node.
-        :param end: The target node.
-        :param plot: Whether to capture frames for visualization.
-        """
+    def execute(self, start: int, end: int) -> Tuple[List[int], float, float, int, int]:
+        """Executes BFS from start to end."""
         time_start = time()
         self.graph.nodes[start]["distance"] = 0
         self.graph.nodes[start]["previous"] = None
@@ -56,7 +51,7 @@ class DijkstraAlgorithm:
     def __init__(self, graph):
         self.graph = graph
 
-    def execute(self, start: int, end: int, plot: bool = False) -> Tuple[List[int], float, float, int, int]:
+    def execute(self, start: int, end: int) -> Tuple[List[int], float, float, int, int]:
         """Executes Dijkstra's algorithm from start to end."""
         time_start = time()
         distances = {node: float('inf') for node in self.graph.nodes}
@@ -101,7 +96,7 @@ class AStarAlgorithm:
         x2, y2 = self.graph.nodes[node2]["x"], self.graph.nodes[node2]["y"]
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
-    def execute(self, start: int, end: int, plot: bool = False) -> Tuple[List[int], float, float, int, int]:
+    def execute(self, start: int, end: int) -> Tuple[List[int], float, float, int, int]:
         """Executes A* algorithm from start to end."""
         time_start = time()
         open_set = [(0, start)]

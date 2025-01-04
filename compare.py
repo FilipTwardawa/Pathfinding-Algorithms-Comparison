@@ -1,84 +1,81 @@
 """
-Example File Using Implemented Algorithms to Compare Results
+Comparison Module
 
-This module creates a graph and runs three pathfinding algorithms (BFS, Dijkstra, A*)
-to compare their performance in terms of path, cost, execution time, and visited nodes.
+This module compares the performance of different pathfinding algorithms.
 """
 
-from graph_utils import initialize_graph_with_distant_points, GraphStyler, GraphProcessor
 from algorithms import BFSAlgorithm, DijkstraAlgorithm, AStarAlgorithm
+from graph_utils import initialize_graph, GraphProcessor, GraphStyler
+
+
+def run_algorithm(algorithm_class, graph, start_node, end_node, styler):
+    """
+    Runs a single algorithm on a graph.
+
+    Args:
+        algorithm_class: The algorithm class to be instantiated.
+        graph (networkx.Graph): The graph to run the algorithm on.
+        start_node (int): The starting node.
+        end_node (int): The target node.
+        styler (GraphStyler): The object responsible for styling nodes and edges.
+
+    Returns:
+        tuple: The result of the algorithm execution.
+    """
+    GraphProcessor.initialize_nodes(graph)
+    GraphProcessor.initialize_edges(graph, styler)
+    algorithm = algorithm_class(graph)
+    return algorithm.execute(start_node, end_node)
+
+
+def run_all_algorithms(graph, start_node, end_node):
+    """
+    Runs BFS, Dijkstra, and A* algorithms and returns the results.
+
+    Args:
+        graph (networkx.Graph): The graph to run the algorithms on.
+        start_node (int): The starting node.
+        end_node (int): The target node.
+
+    Returns:
+        dict: Results of all algorithms.
+    """
+    styler = GraphStyler()
+    results = {}
+
+    for algo_class, algo_name in [
+        (BFSAlgorithm, "BFS"),
+        (DijkstraAlgorithm, "Dijkstra"),
+        (AStarAlgorithm, "A*"),
+    ]:
+        print(f"Running {algo_name}...")
+        results[algo_name] = run_algorithm(algo_class, graph, start_node, end_node, styler)
+        print(f"{algo_name} completed.")
+
+    return results
+
 
 def main():
     """
-    Main function to initialize a graph and run pathfinding algorithms.
-
-    This function generates a graph for Warsaw, Poland, selects two distant points,
-    and runs BFS, Dijkstra, and A* algorithms on the graph. The results of each
-    algorithm are printed for comparison.
+    Main function to initialize the graph and run comparisons.
     """
-    # Initialize the graph and select start and end nodes
-    graph, start_node, end_node = initialize_graph_with_distant_points("Warsaw, Poland")
+    place = "Gliwice, Poland"
+    graph = initialize_graph(place)
 
-    # Initialize styling objects
-    styler = GraphStyler()
+    start_node = list(graph.nodes)[0]
+    end_node = list(graph.nodes)[-1]
 
-    print(f"Start: {graph.nodes[start_node]['name']}, End: {graph.nodes[end_node]['name']}")
+    results = run_all_algorithms(graph, start_node, end_node)
 
-    # Initialize nodes and edges in the graph
-    GraphProcessor.initialize_nodes(graph)
-    GraphProcessor.initialize_edges(graph, styler)
+    for algo_name, result in results.items():
+        path, cost, time_taken, depth, visited = result
+        print(f"{algo_name} results:")
+        print(f"  Path: {path}")
+        print(f"  Cost: {cost}")
+        print(f"  Time: {time_taken:.4f} seconds")
+        print(f"  Depth: {depth}")
+        print(f"  Visited Nodes: {visited}")
 
-    # Run BFS
-    print("Running BFS...")
-    bfs = BFSAlgorithm(graph, None, styler)
-    result_b = bfs.execute(start_node, end_node, plot=False)
-    print("BFS completed.")
-
-    # Reinitialize nodes and edges for the next algorithm
-    GraphProcessor.initialize_nodes(graph)
-    GraphProcessor.initialize_edges(graph, styler)
-
-    # Run Dijkstra
-    print("Running Dijkstra...")
-    dijkstra = DijkstraAlgorithm(graph, None, styler)
-    result_d = dijkstra.execute(start_node, end_node, plot=False)
-    print("Dijkstra completed.")
-
-    # Reinitialize nodes and edges for the next algorithm
-    GraphProcessor.initialize_nodes(graph)
-    GraphProcessor.initialize_edges(graph, styler)
-
-    # Run A*
-    print("Running A*...")
-    astar = AStarAlgorithm(graph, None, styler)
-    result_a = astar.execute(start_node, end_node, plot=False)
-    print("A* completed.")
-
-    # Print BFS results
-    print("\nBFS Results:")
-    print(f"Path: {result_b[0]}")
-    print(f"Cost: {result_b[1]}")
-    print(f"Time: {result_b[2]:.4f} seconds")
-    print(f"Path Steps: {result_b[3]}")
-    print(f"Visited Nodes: {result_b[4]}")
-
-    # Print Dijkstra results
-    print("\nDijkstra Results:")
-    print(f"Path: {result_d[0]}")
-    print(f"Cost: {result_d[1]}")
-    print(f"Time: {result_d[2]:.4f} seconds")
-    print(f"Path Steps: {result_d[3]}")
-    print(f"Visited Nodes: {result_d[4]}")
-
-    # Print A* results
-    print("\nA* Results:")
-    print(f"Path: {result_a[0]}")
-    print(f"Cost: {result_a[1]}")
-    print(f"Time: {result_a[2]:.4f} seconds")
-    print(f"Path Steps: {result_a[3]}")
-    print(f"Visited Nodes: {result_a[4]}")
-
-    print("\nAll algorithms completed.")
 
 if __name__ == "__main__":
     main()
