@@ -46,8 +46,3 @@ The codebase is structured in a modular way to ensure it is easy to test, mainta
 
 ---
 
-## 📦 Installation
-1. **Clone the repository**  
-   Use the following command to clone the repository:
-   ```bash
-   git clone https://github.com/your-username/pathfinding-visualizer.git
