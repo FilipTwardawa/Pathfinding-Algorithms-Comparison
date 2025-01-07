@@ -1,0 +1,4 @@
+site_name: Pathfinding-Algorithms-Comparison
+nav:
+  - Home: index.md
+  - Algorithms: algo.md
