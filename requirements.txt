@@ -1,7 +1,8 @@
-matplotlib==3.9.3
-osmnx==2.0.0
-Pillow==11.0.0
+matplotlib
+osmnx
+Pillow
 pytest
 pytest-cov
 Pillow
 pylint
+pytest-asyncio
