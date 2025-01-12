@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - feature/update-structureAndTesting
-      - feature/Refactoring 
+      - feature/Refactoring
   pull_request:
 
 permissions:
@@ -28,6 +28,9 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install pytest pytest-asyncio pytest-cov
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
       - name: Run tests with coverage
         run: pytest --cov=pathfinding_algorithms --cov-report=xml
