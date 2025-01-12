@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - feature/update-structureAndTesting
+      - feature/Refactoring 
   pull_request:
 
 permissions:
