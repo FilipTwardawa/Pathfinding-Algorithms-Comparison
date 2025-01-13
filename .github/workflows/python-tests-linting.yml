@@ -28,7 +28,6 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install pytest pytest-asyncio pytest-cov
-
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
@@ -55,6 +54,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install flake8 black ruff
+      - name: Copy .flake8 config
+        run: cp .flake8
 
       - name: Lint code with flake8
         run: flake8 .
