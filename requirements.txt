@@ -6,3 +6,6 @@ pytest-cov
 Pillow
 pylint
 pytest-asyncio
+flake8==7.1.1
+black
+ruff
