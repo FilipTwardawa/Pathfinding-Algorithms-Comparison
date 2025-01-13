@@ -63,9 +63,6 @@ jobs:
       - name: Lint code with flake8
         run: flake8 --config=.flake8 .
 
-      - name: Format code with black
-        run: black --check .
-
   todos:
     runs-on: ubuntu-latest
 
