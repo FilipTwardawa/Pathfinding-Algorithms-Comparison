@@ -54,8 +54,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install flake8 black ruff
-      - name: Copy .flake8 config
-        run: cp .flake8
 
       - name: Lint code with flake8
         run: flake8 .
