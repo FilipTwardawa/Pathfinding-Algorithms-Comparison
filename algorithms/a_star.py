@@ -25,7 +25,7 @@ class AStarAlgorithm(GraphAlgorithm):
                 return
 
     async def _node_iterator(
-        self, priority_queue: list, end: int, plot: bool
+            self, priority_queue: list, end: int, plot: bool
     ) -> AsyncGenerator[int, None]:
         """A generator that iterates over vertices in a priority queue."""
         step = 0

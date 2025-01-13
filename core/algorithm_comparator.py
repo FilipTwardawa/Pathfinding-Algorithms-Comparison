@@ -55,7 +55,8 @@ class AlgorithmComparator:
                     STEPS_METRIC: steps,
                     PATH_LENGTH_METRIC: path_length,
                 })
-                print(f"{name} completed in {duration:.4f}s with cost={cost}, steps={steps}, path_length={path_length}.")
+                print(
+                    f"{name} completed in {duration:.4f}s with cost={cost}, steps={steps}, path_length={path_length}.")
             except Exception as e:
                 print(f"Error running {name}: {e}")
 

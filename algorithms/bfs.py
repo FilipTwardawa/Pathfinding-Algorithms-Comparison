@@ -20,7 +20,7 @@ class BFSAlgorithm(GraphAlgorithm):
                 return
 
     async def _node_iterator(
-        self, queue: list, plot: bool
+            self, queue: list, plot: bool
     ) -> AsyncGenerator[int, None]:
         """A generator that iterates over vertices in a BFS queue."""
         step = 0

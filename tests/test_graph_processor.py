@@ -10,12 +10,11 @@ def test_initialize_nodes():
     # Sprawdź, czy wszystkie węzły są zainicjalizowane
     for node in graph.nodes:
         assert (
-            graph.nodes[node].get("visited") is False
+                graph.nodes[node].get("visited") is False
         ), f"Node {node} was not properly initialized"
         assert graph.nodes[node].get("distance") == float(
             "inf"
         ), f"The distance of the node {node} was not properly initialized"
-
 
 
 def test_initialize_edges():
@@ -25,5 +24,5 @@ def test_initialize_edges():
 
     for edge in graph.edges:
         assert (
-            "color" in graph.edges[edge]
+                "color" in graph.edges[edge]
         ), "Edge styling was not applied correctly"

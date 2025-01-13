@@ -5,7 +5,6 @@ from PIL import Image
 from io import BytesIO
 import osmnx as ox
 
-
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
 

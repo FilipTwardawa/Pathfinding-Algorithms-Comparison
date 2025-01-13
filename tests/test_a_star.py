@@ -20,7 +20,7 @@ async def test_a_star_execution():
     await algorithm.execute(start_node, end_node, plot=False)
 
     assert (
-        graph.nodes[end_node]["previous"] is not None
+            graph.nodes[end_node]["previous"] is not None
     ), "The path has not been designated correctly"
 
 
@@ -36,6 +36,7 @@ async def test_a_star_with_delays():
         await algorithm.execute(start_node, end_node, plot=False)
 
     await delayed_execute()
+
 
 @pytest.mark.asyncio
 async def test_a_star_with_mocked_styler():

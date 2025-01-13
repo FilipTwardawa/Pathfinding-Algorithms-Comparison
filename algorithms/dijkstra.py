@@ -23,7 +23,7 @@ class DijkstraAlgorithm(GraphAlgorithm):
                 return
 
     async def _node_iterator(
-        self, priority_queue: list, plot: bool
+            self, priority_queue: list, plot: bool
     ) -> AsyncGenerator[int, None]:
         """A generator that iterates over vertices in a priority queue."""
         step = 0
@@ -43,7 +43,7 @@ class DijkstraAlgorithm(GraphAlgorithm):
             yield current_node
 
     def _process_edge(
-        self, edge: Tuple[int, int, int], current_distance: float, priority_queue: list
+            self, edge: Tuple[int, int, int], current_distance: float, priority_queue: list
     ):
         """Processes the edge during the iteration of the Dijkstra algorithm."""
         neighbor = edge[1]

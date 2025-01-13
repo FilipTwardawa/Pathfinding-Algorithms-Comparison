@@ -1,5 +1,6 @@
 class DependencyInjector:
     """A simple container for dependency management."""
+
     def __init__(self):
         self._services = {}
 

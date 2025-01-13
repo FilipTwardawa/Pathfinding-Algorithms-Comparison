@@ -4,6 +4,7 @@ from utils.graph_initializer import initialize_graph
 from PIL import Image, ImageChops
 import os
 
+
 @pytest.mark.asyncio
 async def test_visual_regression():
     graph = initialize_graph("Gliwice, Poland")
@@ -17,7 +18,6 @@ async def test_visual_regression():
     # Create a directory if it does not exist
     os.makedirs(os.path.dirname(reference_path), exist_ok=True)
 
-
     if not os.path.exists(reference_path):
         print(f"Reference file missing. I am creating a new one: {reference_path}")
         generated_image = visualizer.frames[0]
@@ -30,5 +30,3 @@ async def test_visual_regression():
     diff = ImageChops.difference(expected_image, generated_image)
 
     assert diff.getbbox() is None, "Changes in visualization introduced regression"
-
-
