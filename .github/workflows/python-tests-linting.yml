@@ -54,6 +54,9 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      - name: Display .flake8 config
+        run: cat .flake8
+
       - name: Check flake8 version
         run: flake8 --version
 
