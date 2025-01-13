@@ -53,7 +53,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install flake8 black ruff
+          pip install flake8==6.0.0 black ruff
+
+      - name: Check flake8 version
+        run: flake8 --version
 
       - name: Lint code with flake8
         run: flake8 .
