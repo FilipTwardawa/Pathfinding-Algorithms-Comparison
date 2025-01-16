@@ -81,7 +81,6 @@ def compare_algorithms():
 if __name__ == "__main__":
     print("Starting application...")
 
-
     # Check flags and execute features based on their states
     try:
         asyncio.run(profile_visualizer())
