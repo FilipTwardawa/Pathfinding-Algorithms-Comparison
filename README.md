@@ -4,7 +4,7 @@
 
 ## Overview
 
-*This project provides a robust framework for comparing and visualizing various pathfinding algorithms, such as Dijkstra, A*, and BFS. Designed with scalability, maintainability, and visualization at its core, the project facilitates:*
+*This project provides a robust framework for comparing and visualizing various pathfinding algorithms, such as Dijkstra, A Star, and BFS. Designed with scalability, maintainability, and visualization at its core, the project facilitates:*
 
 - Performance analysis of algorithms based on execution time, path cost, steps, and path length.
 
