@@ -1,9 +1,7 @@
 import pytest
-from core.graph_visualizer import GraphVisualizer
-from core.graph_styler import GraphStyler
-from core.path_reconstructor import PathReconstructor
-from algorithms.dijkstra import DijkstraAlgorithm
-from utils.graph_initializer import initialize_graph
+from core import GraphVisualizer, GraphStyler, PathReconstructor
+from algorithms import DijkstraAlgorithm
+from utils import initialize_graph
 
 
 @pytest.mark.asyncio
@@ -24,6 +22,6 @@ async def test_full_pipeline_integration():
 
     # Checking the results
     assert (
-        graph.nodes[end_node]["previous"] is not None
+            graph.nodes[end_node]["previous"] is not None
     ), "The path has not been designated correctly"
     assert len(visualizer.frames) > 0, "Visualization has not been generated"

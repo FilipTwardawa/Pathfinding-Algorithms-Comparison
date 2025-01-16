@@ -1,6 +1,6 @@
 import pytest
-from core.graph_visualizer import GraphVisualizer
-from utils.graph_initializer import initialize_graph
+from core import GraphVisualizer
+from utils import initialize_graph
 from PIL import Image, ImageChops
 import os
 

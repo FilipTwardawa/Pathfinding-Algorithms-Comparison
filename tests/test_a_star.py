@@ -1,11 +1,9 @@
 import pytest
-from algorithms.a_star import AStarAlgorithm
-from core.graph_processor import GraphProcessor
-from core.graph_visualizer import GraphVisualizer
-from core.graph_styler import GraphStyler
-from utils.graph_initializer import initialize_graph
-import asyncio
 from unittest.mock import MagicMock
+import asyncio
+from algorithms import AStarAlgorithm
+from core import GraphProcessor, GraphVisualizer, GraphStyler
+from utils import initialize_graph
 
 
 @pytest.mark.asyncio
@@ -19,9 +17,7 @@ async def test_a_star_execution():
     start_node, end_node = list(graph.nodes)[:2]
     await algorithm.execute(start_node, end_node, plot=False)
 
-    assert (
-            graph.nodes[end_node]["previous"] is not None
-    ), "The path has not been designated correctly"
+    assert graph.nodes[end_node]["previous"] is not None, "The path has not been designated correctly"
 
 
 @pytest.mark.asyncio

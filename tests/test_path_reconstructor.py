@@ -1,10 +1,6 @@
 import pytest
-
-from core import GraphProcessor
-from core.path_reconstructor import PathReconstructor
-from core.graph_visualizer import GraphVisualizer
-from core.graph_styler import GraphStyler
-from utils.graph_initializer import initialize_graph
+from core import GraphProcessor, PathReconstructor, GraphVisualizer, GraphStyler
+from utils import initialize_graph
 
 
 @pytest.mark.asyncio

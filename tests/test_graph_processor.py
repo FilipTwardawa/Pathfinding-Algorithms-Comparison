@@ -1,13 +1,11 @@
-from core.graph_processor import GraphProcessor
-from core.graph_styler import GraphStyler
-from utils.graph_initializer import initialize_graph
+from core import GraphProcessor, GraphStyler
+from utils import initialize_graph
 
 
 def test_initialize_nodes():
     graph = initialize_graph("Gliwice, Poland")
     GraphProcessor.initialize_nodes(graph)
 
-    # Sprawdź, czy wszystkie węzły są zainicjalizowane
     for node in graph.nodes:
         assert (
                 graph.nodes[node].get("visited") is False

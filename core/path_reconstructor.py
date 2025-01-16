@@ -1,6 +1,4 @@
-from core.graph_processor import GraphProcessor
-from core.graph_visualizer import GraphVisualizer
-from core.graph_styler import GraphStyler
+from core import GraphProcessor, GraphVisualizer, GraphStyler
 import logging
 
 logger = logging.getLogger(__name__)

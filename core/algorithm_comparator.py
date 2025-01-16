@@ -3,14 +3,11 @@ import os
 import time
 import pandas as pd
 import matplotlib.pyplot as plt
-from algorithms.dijkstra import DijkstraAlgorithm
-from algorithms.a_star import AStarAlgorithm
-from algorithms.bfs import BFSAlgorithm
-from utils.graph_initializer import initialize_graph
-from core.graph_styler import GraphStyler
-from core.graph_processor import GraphProcessor
+from utils import initialize_graph
+from core import GraphStyler, GraphProcessor
+import importlib
 
-# Define constants for metrics
+# Metrics
 TIME_METRIC = "Time (s)"
 COST_METRIC = "Total Cost"
 STEPS_METRIC = "Steps"
@@ -18,16 +15,18 @@ PATH_LENGTH_METRIC = "Path Length"
 
 
 class AlgorithmComparator:
-    """Compares pathfinding algorithms on various metrics and generates visualizations."""
-
     def __init__(self, graph, start_node, end_node):
+        dijkstra_algorithm = getattr(importlib.import_module("algorithms.dijkstra"), "DijkstraAlgorithm")
+        a_star_algorithm = getattr(importlib.import_module("algorithms.a_star"), "AStarAlgorithm")
+        bfs_algorithm = getattr(importlib.import_module("algorithms.bfs"), "BFSAlgorithm")
+
         self.graph = graph
         self.start_node = start_node
         self.end_node = end_node
         self.algorithms = {
-            "Dijkstra": DijkstraAlgorithm(graph, None, GraphStyler()),
-            "A*": AStarAlgorithm(graph, None, GraphStyler()),
-            "BFS": BFSAlgorithm(graph, None, GraphStyler()),
+            "Dijkstra": dijkstra_algorithm(graph, None, GraphStyler()),
+            "A*": a_star_algorithm(graph, None, GraphStyler()),
+            "BFS": bfs_algorithm(graph, None, GraphStyler()),
         }
         self.results = []
 

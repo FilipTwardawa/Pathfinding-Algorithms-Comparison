@@ -1,5 +1,5 @@
 import networkx as nx
-from core.graph_styler import GraphStyler
+from core import GraphStyler
 
 
 def test_style_edge_digraph():
