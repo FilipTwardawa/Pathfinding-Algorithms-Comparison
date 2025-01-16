@@ -184,3 +184,11 @@ poetry.toml
 
 # LSP config files
 pyrightconfig.json
+
+#Other files in the project
+.DS_Store
+.idea/
+cache/
+credentials.py
+results/.DS_Store
+results/comparisons/.DS_Store
