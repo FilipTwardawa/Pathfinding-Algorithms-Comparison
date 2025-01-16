@@ -1,34 +1,35 @@
-import cProfile
-import pstats
-import asyncio
 import random
-import time
-from core import GraphProcessor, PathReconstructor
-from core.graph_visualizer import GraphVisualizer
-from core.graph_styler import GraphStyler
+import asyncio
+from core import FeatureFlagManager, FlagsmithProvider, GraphVisualizer, GraphStyler, GraphProcessor, \
+    AlgorithmComparator, PathReconstructor
 from utils.graph_initializer import initialize_graph
-from algorithms.dijkstra import DijkstraAlgorithm
-from algorithms.a_star import AStarAlgorithm
-from algorithms.bfs import BFSAlgorithm
-from core.algorithm_comparator import AlgorithmComparator
+from algorithms import DijkstraAlgorithm, AStarAlgorithm, BFSAlgorithm
+from credentials import flagsmith_api_key
 
-# Define a constant for the graph location
+# Initialize Feature Flags
+flagsmith_provider = FlagsmithProvider(environment_key=flagsmith_api_key)
+feature_flags = FeatureFlagManager(provider=flagsmith_provider)
+
+# Define constants
 GRAPH_LOCATION = "Gliwice, Poland"
 
 
-def profile_visualizer() -> None:
-    """Profiles and generates GIFs for all pathfinding algorithms."""
+async def profile_visualizer():
+    """Profiles and generates GIFs for all pathfinding algorithms if enabled."""
+    if not feature_flags.is_enabled("enable-visualizer"):
+        print("Feature 'enable-visualizer' is disabled. Skipping visualization.")
+        return
+
     graph_instance = initialize_graph(GRAPH_LOCATION)
     styler = GraphStyler()
     visualizer = GraphVisualizer(graph_instance)
-    start_node_instance = random.choice(list(graph_instance.nodes))
-    end_node_instance = random.choice(list(graph_instance.nodes))
 
-    # Ensure start and end nodes are distinct
-    while start_node_instance == end_node_instance:
-        end_node_instance = random.choice(list(graph_instance.nodes))
+    start_node = random.choice(list(graph_instance.nodes))
+    end_node = random.choice(list(graph_instance.nodes))
 
-    # List of algorithms to profile
+    while start_node == end_node:
+        end_node = random.choice(list(graph_instance.nodes))
+
     algorithms = [
         ("Dijkstra", DijkstraAlgorithm(graph_instance, visualizer, styler)),
         ("A*", AStarAlgorithm(graph_instance, visualizer, styler)),
@@ -39,67 +40,51 @@ def profile_visualizer() -> None:
         for name, algorithm in algorithms:
             print(f"Running {name} Algorithm...")
             try:
-                await algorithm.execute(start_node_instance, end_node_instance, plot=True)
-                print(f"{name} Algorithm finished successfully.")
-
-                # Reconstruct the path and save GIF
+                await algorithm.execute(start_node, end_node, plot=True)
                 reconstructor = PathReconstructor(graph_instance, visualizer, styler)
-                await reconstructor.reconstruct_path(start_node_instance, end_node_instance, plot=True)
+                await reconstructor.reconstruct_path(start_node, end_node, plot=True)
 
-                # Save GIF
                 gif_filename = f"{name.lower()}_visualization.gif"
                 await visualizer.save_gif(gif_filename, duration=100)
                 print(f"Saved GIF for {name}: {gif_filename}")
             except Exception as error:
                 print(f"Error during {name}: {error}")
 
-            # Reset visualizer and graph for next algorithm
             visualizer.frames.clear()
             GraphProcessor.initialize_nodes(graph_instance)
             GraphProcessor.initialize_edges(graph_instance, styler)
 
-    asyncio.run(run_visualization())
+    await run_visualization()
 
 
-def compare_algorithms() -> None:
-    """Compares algorithms and generates comparison visualizations."""
+def compare_algorithms():
+    """Compares algorithms and generates comparison visualizations if enabled."""
+    if not feature_flags.is_enabled("enable-algorithm-comparison"):
+        print("Feature 'enable-algorithm-comparison' is disabled. Skipping comparison.")
+        return
+
     graph_instance = initialize_graph(GRAPH_LOCATION)
-    start_node_instance = random.choice(list(graph_instance.nodes))
-    end_node_instance = random.choice(list(graph_instance.nodes))
+    start_node = random.choice(list(graph_instance.nodes))
+    end_node = random.choice(list(graph_instance.nodes))
 
-    # Ensure start and end nodes are distinct
-    while start_node_instance == end_node_instance:
-        end_node_instance = random.choice(list(graph_instance.nodes))
+    while start_node == end_node:
+        end_node = random.choice(list(graph_instance.nodes))
 
-    print(f"Selected start node: {start_node_instance}, end node: {end_node_instance}")
+    print(f"Selected start node: {start_node}, end node: {end_node}")
 
-    comparator = AlgorithmComparator(graph_instance, start_node_instance, end_node_instance)
+    comparator = AlgorithmComparator(graph_instance, start_node, end_node)
     comparator.run_comparison(plot=False)
     comparator.generate_visualizations()
     print("Comparison charts generated successfully.")
 
 
 if __name__ == "__main__":
-    profiler = cProfile.Profile()
-    profiler.enable()
+    print("Starting application...")
 
+
+    # Check flags and execute features based on their states
     try:
-        print("Starting visualizer profiling...")
-        profile_visualizer()
-
-        print("\nStarting algorithm comparison...")
+        asyncio.run(profile_visualizer())
         compare_algorithms()
-
     except Exception as e:
-        print(f"Error during execution: {e}")
-
-    profiler.disable()
-
-    # Save profiler stats with a timestamp
-    timestamp = time.strftime("%Y%m%d-%H%M%S")
-    profile_filename = f"main_profile_{timestamp}.prof"
-    stats = pstats.Stats(profiler)
-    stats.dump_stats(profile_filename)
-    stats.sort_stats("time").print_stats(10)
-
-    print(f"Profiler data saved to {profile_filename}")
+        print(f"An error occurred during execution: {e}")
