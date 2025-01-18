@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - main
-      - feature/update-structureAndTesting
-      - feature/Refactoring
+      - feature/Docs
   pull_request:
 
 permissions:
