@@ -6,12 +6,27 @@ import math
 
 
 class AStarAlgorithm(GraphAlgorithm):
-    """Performs A* algorithm using generators for efficient iteration."""
+    """
+    Implements the A* algorithm for pathfinding using asynchronous generators for efficient iteration.
+
+    The algorithm operates on a graph and finds the shortest path from a start node to an end node.
+    It uses a heuristic function (Euclidean distance) to guide the search.
+    """
 
     @log_execution
     @measure_time
     async def execute(self, start: int, end: int, plot: bool = False):
-        """Performs the A* algorithm using generators."""
+        """
+        Executes the A* algorithm to find the shortest path from a start node to an end node.
+
+        Args:
+            start (int): The starting node of the path.
+            end (int): The target node of the path.
+            plot (bool, optional): Flag indicating whether to plot the algorithm's progress. Defaults to False.
+
+        Returns:
+            None
+        """
         self.initialize_graph()
         self.styler.style_node(self.graph, start, size=50)
         self.styler.style_node(self.graph, end, size=50)
@@ -27,7 +42,17 @@ class AStarAlgorithm(GraphAlgorithm):
     async def _node_iterator(
             self, priority_queue: list, end: int, plot: bool
     ) -> AsyncGenerator[int, None]:
-        """A generator that iterates over vertices in a priority queue."""
+        """
+        Asynchronous generator that iterates over nodes in a priority queue.
+
+        Args:
+            priority_queue (list): The priority queue used to determine the next node to visit.
+            end (int): The target node for the algorithm.
+            plot (bool): Flag indicating whether to capture frames for visualization. Defaults to False.
+
+        Yields:
+            int: The current node being processed.
+        """
         step = 0
         while priority_queue:
             _, current_node = heapq.heappop(priority_queue)
@@ -45,7 +70,19 @@ class AStarAlgorithm(GraphAlgorithm):
             yield current_node
 
     def _process_edge(self, edge: Tuple[int, int, int], end: int, priority_queue: list):
-        """Przetwarza krawędź podczas iteracji."""
+        """
+        Processes an edge during the A* algorithm's execution.
+
+        Updates the g_score and f_score for the neighbor node if a shorter path is found.
+
+        Args:
+            edge (Tuple[int, int, int]): A tuple representing the edge (start_node, neighbor_node, edge_id).
+            end (int): The target node for the algorithm.
+            priority_queue (list): The priority queue used to schedule nodes for processing.
+
+        Returns:
+            None
+        """
         neighbor = edge[1]
         weight = self.graph.edges[edge]["weight"]
         g_score = self.graph.nodes[edge[0]]["g_score"] + weight
@@ -59,7 +96,16 @@ class AStarAlgorithm(GraphAlgorithm):
         self.styler.style_edge(self.graph, edge, color="#2432B0", alpha=1, linewidth=3)
 
     def _heuristic(self, node1: int, node2: int) -> float:
-        """Calculates heuristics (Euclidean distance)."""
+        """
+        Calculates the heuristic value (Euclidean distance) between two nodes.
+
+        Args:
+            node1 (int): The first node's identifier.
+            node2 (int): The second node's identifier.
+
+        Returns:
+            float: The Euclidean distance between the two nodes.
+        """
         x1, y1 = self.graph.nodes[node1]["x"], self.graph.nodes[node1]["y"]
         x2, y2 = self.graph.nodes[node2]["x"], self.graph.nodes[node2]["y"]
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)

@@ -1,3 +1,14 @@
+"""
+Algorithm Comparator Module
+
+This module provides a framework for comparing the performance of different pathfinding algorithms
+on a given graph. It includes methods for initializing algorithms, running comparisons,
+collecting metrics, and generating visualizations.
+
+Classes:
+    AlgorithmComparator: Facilitates the comparison of pathfinding algorithms' performance.
+"""
+
 import asyncio
 import os
 import time
@@ -15,7 +26,26 @@ PATH_LENGTH_METRIC = "Path Length"
 
 
 class AlgorithmComparator:
+    """
+    A class to compare the performance of multiple pathfinding algorithms.
+
+    Attributes:
+        graph (Graph): The graph instance on which the algorithms will run.
+        start_node (Any): The starting node for the algorithms.
+        end_node (Any): The target node for the algorithms.
+        algorithms (dict): A dictionary of algorithms to compare.
+        results (list): A list to store the performance results of the algorithms.
+    """
+
     def __init__(self, graph, start_node, end_node):
+        """
+        Initializes the AlgorithmComparator with the provided graph and nodes.
+
+        Args:
+            graph (Graph): The graph instance on which the algorithms will run.
+            start_node (Any): The starting node for the algorithms.
+            end_node (Any): The target node for the algorithms.
+        """
         dijkstra_algorithm = getattr(importlib.import_module("algorithms.dijkstra"), "DijkstraAlgorithm")
         a_star_algorithm = getattr(importlib.import_module("algorithms.a_star"), "AStarAlgorithm")
         bfs_algorithm = getattr(importlib.import_module("algorithms.bfs"), "BFSAlgorithm")
@@ -31,16 +61,19 @@ class AlgorithmComparator:
         self.results = []
 
     def run_comparison(self, plot=False):
-        """Runs all algorithms and records their metrics."""
+        """
+        Runs all algorithms and records their performance metrics.
+
+        Args:
+            plot (bool): Whether to visualize the algorithms' execution on the graph. Defaults to False.
+        """
         for name, algorithm in self.algorithms.items():
             print(f"Running {name}...")
-            # Initialize graph
             GraphProcessor.initialize_nodes(self.graph)
             GraphProcessor.initialize_edges(self.graph, GraphStyler())
 
             start_time = time.time()
             try:
-                # Await the async execution of the algorithm
                 asyncio.run(algorithm.execute(self.start_node, self.end_node, plot))
                 duration = time.time() - start_time
                 cost, steps, path_length = self._collect_metrics()
@@ -60,7 +93,12 @@ class AlgorithmComparator:
                 print(f"Error running {name}: {e}")
 
     def _collect_metrics(self):
-        """Collects metrics after running an algorithm."""
+        """
+        Collects metrics for an algorithm's execution, including cost, steps, and path length.
+
+        Returns:
+            tuple: A tuple containing the total cost, number of steps, and path length.
+        """
         cost = 0
         steps = 0
         path_length = 0
@@ -69,9 +107,8 @@ class AlgorithmComparator:
         while current_node is not None and self.graph.nodes[current_node].get("previous") is not None:
             prev_node = self.graph.nodes[current_node]["previous"]
             edge_data = self.graph.get_edge_data(prev_node, current_node, default={})
-
-            # Safely get the weight of the edge
             edge_weight = edge_data.get("weight", 0)
+
             if edge_weight == 0:
                 print(f"⚠️ Missing weight for edge ({prev_node}, {current_node}). Defaulting to 1.")
                 edge_weight = 1
@@ -84,7 +121,12 @@ class AlgorithmComparator:
         return cost, steps, path_length
 
     def generate_visualizations(self, output_dir="results/comparisons"):
-        """Generates and saves comparison charts."""
+        """
+        Generates and saves comparison charts for the algorithm performance metrics.
+
+        Args:
+            output_dir (str): The directory where the visualizations will be saved. Defaults to "results/comparisons".
+        """
         if not self.results:
             print("No valid results to visualize.")
             return
@@ -106,7 +148,10 @@ class AlgorithmComparator:
 
 
 if __name__ == "__main__":
-    # Initialize graph and comparator
+    """
+    Main execution flow for the AlgorithmComparator.
+    Initializes the graph and runs comparisons and visualizations.
+    """
     graph_instance = initialize_graph("Gliwice, Poland")
     start_node_instance = list(graph_instance.nodes)[0]
     end_node_instance = list(graph_instance.nodes)[-1]

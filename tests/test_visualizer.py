@@ -7,6 +7,15 @@ import os
 
 @pytest.mark.asyncio
 async def test_visualizer_capture_frame():
+    """Test the ability of the GraphVisualizer to capture a frame.
+
+    This test initializes a graph for the location "Gliwice, Poland" and creates
+    an instance of `GraphVisualizer`. It ensures that after calling the `capture_frame`
+    method, a single frame is successfully registered.
+
+    Raises:
+        AssertionError: If the number of registered frames is not 1.
+    """
     graph = initialize_graph("Gliwice, Poland")
     visualizer = GraphVisualizer(graph)
 
@@ -15,6 +24,16 @@ async def test_visualizer_capture_frame():
 
 
 def test_visualizer_save_gif():
+    """Test the ability of the GraphVisualizer to save frames as a GIF.
+
+    This test initializes a graph and manually sets the frames of the
+    `GraphVisualizer` instance to a list of fake images. It then invokes
+    the `save_gif` method to save the frames as an animated GIF.
+    The test verifies that the GIF is saved at the expected location.
+
+    Raises:
+        AssertionError: If the GIF file does not exist at the specified location.
+    """
     graph = initialize_graph("Gliwice, Poland")
     visualizer = GraphVisualizer(graph)
 

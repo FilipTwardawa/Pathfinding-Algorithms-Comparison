@@ -10,12 +10,21 @@ from credentials import flagsmith_api_key
 flagsmith_provider = FlagsmithProvider(environment_key=flagsmith_api_key)
 feature_flags = FeatureFlagManager(provider=flagsmith_provider)
 
-# Define constants
+# Define a fixed location
 GRAPH_LOCATION = "Gliwice, Poland"
 
 
 async def profile_visualizer():
-    """Profiles and generates GIFs for all pathfinding algorithms if enabled."""
+    """
+    Profiles and generates GIFs for all pathfinding algorithms if the feature flag is enabled.
+
+    This function initializes the graph instance, selects random start and end nodes, and executes
+    three pathfinding algorithms (Dijkstra, A*, BFS). If visualization is enabled, it generates GIFs
+    for each algorithm and saves them to disk.
+
+    Raises:
+        Exception: If any error occurs during the execution of an algorithm or GIF generation.
+    """
     if not feature_flags.is_enabled("enable-visualizer"):
         print("Feature 'enable-visualizer' is disabled. Skipping visualization.")
         return
@@ -37,6 +46,12 @@ async def profile_visualizer():
     ]
 
     async def run_visualization():
+        """
+        Executes the visualization for each algorithm and generates GIFs.
+
+        Raises:
+            Exception: If there is an error during the execution of any algorithm.
+        """
         for name, algorithm in algorithms:
             print(f"Running {name} Algorithm...")
             try:
@@ -58,7 +73,15 @@ async def profile_visualizer():
 
 
 def compare_algorithms():
-    """Compares algorithms and generates comparison visualizations if enabled."""
+    """
+    Compares pathfinding algorithms and generates visualizations if the feature flag is enabled.
+
+    This function initializes the graph instance, selects random start and end nodes, and compares
+    algorithms using a pre-defined AlgorithmComparator. It also generates visualizations for the comparison.
+
+    Raises:
+        Exception: If there is an error during comparison or visualization generation.
+    """
     if not feature_flags.is_enabled("enable-algorithm-comparison"):
         print("Feature 'enable-algorithm-comparison' is disabled. Skipping comparison.")
         return
@@ -79,6 +102,13 @@ def compare_algorithms():
 
 
 if __name__ == "__main__":
+    """
+    Entry point of the application.
+
+    This script executes the profile visualizer and algorithm comparison features based on the
+    state of the feature flags. It initializes asynchronous execution and handles any uncaught
+    exceptions during runtime.
+    """
     print("Starting application...")
 
     # Check flags and execute features based on their states

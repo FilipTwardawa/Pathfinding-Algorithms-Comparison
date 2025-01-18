@@ -7,7 +7,19 @@ logger = logging.getLogger(__name__)
 
 
 def log_execution(func):
-    """A decorator that logs the execution of a function."""
+    """
+    Log the start and completion of a function's execution.
+
+    This decorator logs the beginning and end of a function's execution,
+    providing insight into function call timing and completion for debugging
+    and monitoring purposes.
+
+    Args:
+        func (Callable): The function to be decorated.
+
+    Returns:
+        Callable: A wrapper function that logs execution details.
+    """
 
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -20,7 +32,19 @@ def log_execution(func):
 
 
 def measure_time(func):
-    """A decorator that measures the execution time of a function."""
+    """
+    Measure and log the execution time of a function.
+
+    This decorator calculates and logs the time taken for a function's
+    execution, making it a helpful tool for performance measurement and
+    optimization.
+
+    Args:
+        func (Callable): The function to be decorated.
+
+    Returns:
+        Callable: A wrapper function that logs execution time.
+    """
 
     @wraps(func)
     def wrapper(*args, **kwargs):

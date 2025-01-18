@@ -6,7 +6,21 @@ from utils import initialize_graph
 
 @pytest.mark.asyncio
 async def test_full_pipeline_integration():
-    """Checks the integration of the algorithm, visualizer and path reconstructor."""
+    """
+    Test the integration of the graph algorithm, visualizer, and path reconstructor.
+
+    This test performs the following steps:
+    1. Initializes a graph based on a geographic location.
+    2. Executes the Dijkstra algorithm to find the shortest path between two nodes.
+    3. Reconstructs the path and generates a visual representation.
+    4. Verifies the correctness of the path and visualization output.
+
+    Args:
+        None
+
+    Raises:
+        AssertionError: If the path reconstruction or visualization is incorrect.
+    """
     graph = initialize_graph("Gliwice, Poland")
     visualizer = GraphVisualizer(graph)
     styler = GraphStyler()

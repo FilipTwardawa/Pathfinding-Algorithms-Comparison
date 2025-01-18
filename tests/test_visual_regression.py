@@ -7,6 +7,23 @@ import os
 
 @pytest.mark.asyncio
 async def test_visual_regression():
+    """
+    Test for visual regression in the GraphVisualizer.
+
+    This test initializes a graph based on the location "Gliwice, Poland" and
+    uses the GraphVisualizer to generate a visualization. The generated frame
+    is compared with a reference image to ensure no regressions in visualization.
+
+    Steps:
+        1. Initialize the graph for a specified location.
+        2. Capture a frame using the GraphVisualizer.
+        3. Check if a reference image exists:
+            - If missing, create a new reference image and skip the test.
+        4. Compare the generated image with the reference image using pixel difference.
+
+    Raises:
+        AssertionError: If there are visual differences between the generated and reference images.
+    """
     graph = initialize_graph("Gliwice, Poland")
     visualizer = GraphVisualizer(graph)
 

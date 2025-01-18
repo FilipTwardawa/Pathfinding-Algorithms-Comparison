@@ -5,12 +5,31 @@ import heapq
 
 
 class DijkstraAlgorithm(GraphAlgorithm):
-    """Performs Dijkstra's algorithm using generators for efficient traversal."""
+    """
+    Implements Dijkstra's shortest path algorithm using asynchronous generators
+    for efficient graph traversal.
+
+    This algorithm calculates the shortest path between a start node and an
+    end node in a weighted graph, leveraging priority queues for optimal
+    performance. The implementation supports real-time visualization and
+    node/edge styling.
+    """
 
     @log_execution
     @measure_time
     async def execute(self, start: int, end: int, plot: bool = False):
-        """Performs the Dijkstra algorithm using generators."""
+        """
+        Executes Dijkstra's algorithm to compute the shortest path in the graph.
+
+        Args:
+            start (int): The starting node for the algorithm.
+            end (int): The target node for the algorithm.
+            plot (bool, optional): Whether to visualize the graph traversal.
+                Defaults to False.
+
+        Returns:
+            None
+        """
         self.initialize_graph()
         self.styler.style_node(self.graph, start, size=50)
         self.styler.style_node(self.graph, end, size=50)
@@ -25,7 +44,17 @@ class DijkstraAlgorithm(GraphAlgorithm):
     async def _node_iterator(
             self, priority_queue: list, plot: bool
     ) -> AsyncGenerator[int, None]:
-        """A generator that iterates over vertices in a priority queue."""
+        """
+        Asynchronous generator for traversing nodes in the priority queue.
+
+        Args:
+            priority_queue (list): A list of tuples representing the nodes
+                to process, with their associated distances.
+            plot (bool): Whether to capture frames during traversal for visualization.
+
+        Yields:
+            int: The current node being processed.
+        """
         step = 0
         while priority_queue:
             current_distance, current_node = heapq.heappop(priority_queue)
@@ -45,7 +74,22 @@ class DijkstraAlgorithm(GraphAlgorithm):
     def _process_edge(
             self, edge: Tuple[int, int, int], current_distance: float, priority_queue: list
     ):
-        """Processes the edge during the iteration of the Dijkstra algorithm."""
+        """
+        Processes an edge during the traversal of the graph in Dijkstra's algorithm.
+
+        Updates the distance to neighboring nodes and manages the priority queue.
+
+        Args:
+            edge (Tuple[int, int, int]): A tuple representing the edge in the graph,
+                containing the source node, target node, and edge key.
+            current_distance (float): The distance from the start node to the
+                current node.
+            priority_queue (list): The priority queue used for managing nodes
+                to visit next.
+
+        Returns:
+            None
+        """
         neighbor = edge[1]
         weight = self.graph.edges[edge]["weight"]
         new_distance = current_distance + weight
