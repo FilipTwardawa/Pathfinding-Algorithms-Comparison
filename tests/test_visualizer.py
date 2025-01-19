@@ -7,14 +7,14 @@ import os
 
 @pytest.mark.asyncio
 async def test_visualizer_capture_frame():
-    """Test the ability of the GraphVisualizer to capture a frame.
+    """
+    Test the ability of the GraphVisualizer to capture a frame.
 
-    This test initializes a graph for the location "Gliwice, Poland" and creates
-    an instance of `GraphVisualizer`. It ensures that after calling the `capture_frame`
-    method, a single frame is successfully registered.
+    This ensures that after calling the `capture_frame` method, a single
+    frame is successfully registered in the visualizer's frame list.
 
     Raises:
-        AssertionError: If the number of registered frames is not 1.
+        AssertionError: If no frames are registered after capture.
     """
     graph = initialize_graph("Gliwice, Poland")
     visualizer = GraphVisualizer(graph)

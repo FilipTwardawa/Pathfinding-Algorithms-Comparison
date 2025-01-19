@@ -1,0 +1,11 @@
+site_name: Pathfinding Algorithms Documentation
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - Algorithms:
+      - A*: algorithms/a_star.md
+      - Dijkstra: algorithms/dijkstra.md
+      - BFS: algorithms/bfs.md

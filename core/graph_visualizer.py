@@ -21,39 +21,53 @@ class GraphVisualizer:
     """
 
     def __init__(self, graph):
-        """Initializes the GraphVisualizer with a given graph.
+        """
+        Initializes the GraphVisualizer with a given graph.
 
         Args:
             graph: A graph object compatible with OSMnx visualization.
+
+        Raises:
+            ValueError: If the provided graph is invalid.
         """
         self.graph = graph
         self.frames = []
 
     async def capture_frame(self):
-        """Captures the current state of the graph as an image frame.
+        """
+        Captures the current state of the graph as an image frame.
 
         This method generates a visualization of the graph using OSMnx,
         saves it as a temporary PNG image, and appends it to the frames list.
 
         Raises:
-            ValueError: If the graph is invalid or not visualizable.
+            ValueError: If the graph cannot be visualized or is empty.
+            RuntimeError: If capturing the frame fails due to system issues.
         """
         print(f"Capturing frame... (Frames before: {len(self.frames)})")
 
         fig, _ = ox.plot_graph(
             self.graph,
-            node_size=[self.graph.nodes[node].get("size", 0) for node in self.graph.nodes],
-            edge_color=[self.graph.edges[edge].get("color", "#2432B0") for edge in self.graph.edges],
+            node_size=[
+                self.graph.nodes[node].get("size", 0) for node in self.graph.nodes
+            ],
+            edge_color=[
+                self.graph.edges[edge].get("color", "#2432B0")
+                for edge in self.graph.edges
+            ],
             edge_alpha=0.3,
-            edge_linewidth=[self.graph.edges[edge].get("linewidth", 0.5) for edge in self.graph.edges],
+            edge_linewidth=[
+                self.graph.edges[edge].get("linewidth", 0.5)
+                for edge in self.graph.edges
+            ],
             node_color="#ADD8E6",
             bgcolor="#0F1126",
             show=False,
-            close=False
+            close=False,
         )
 
         buf = BytesIO()
-        plt.savefig(buf, format='png', dpi=300)
+        plt.savefig(buf, format="png", dpi=300)
         buf.seek(0)
         img = Image.open(buf).copy()
         buf.close()
@@ -63,7 +77,8 @@ class GraphVisualizer:
         print(f"Frame captured! (Total frames: {len(self.frames)})")
 
     def save_gif(self, gif_filename: str, duration: int = 100):
-        """Generates a GIF from the captured frames.
+        """
+        Generates a GIF from the captured frames.
 
         This method compiles all captured image frames into an animated
         GIF and saves it to the specified file location.
@@ -89,7 +104,7 @@ class GraphVisualizer:
                 save_all=True,
                 append_images=self.frames[1:],
                 duration=duration,
-                loop=0
+                loop=0,
             )
             print(f"✅ GIF saved: {full_path}")
         else:

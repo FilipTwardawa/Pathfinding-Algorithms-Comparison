@@ -45,7 +45,9 @@ class PathReconstructor:
                     if plot:
                         await self.visualizer.capture_frame()
                 except Exception as e:
-                    logger.error(f"Error styling or capturing frame for edge {edge}: {e}")
+                    logger.error(
+                        f"Error styling or capturing frame for edge {edge}: {e}"
+                    )
                     continue
             if plot:
                 await self._add_final_frames()
@@ -53,7 +55,8 @@ class PathReconstructor:
             logger.error(f"Error reconstructing path: {e}")
 
     async def _path_generator(self, start: int, end: int):
-        """Generates edges for the path reconstruction asynchronously.
+        """
+        Generates edges for the path reconstruction asynchronously.
 
         This method yields edges in the path from the end node to the start node.
 
@@ -65,7 +68,8 @@ class PathReconstructor:
             tuple: A tuple containing the source node, target node, and key of an edge.
 
         Raises:
-            Exception: Logs an error if the path reconstruction fails due to missing edges.
+            RuntimeError: If a path cannot be reconstructed due to missing attributes like `previous`.
+            ValueError: If the start or end node is invalid or disconnected.
         """
         current_node = end
         while current_node != start:
