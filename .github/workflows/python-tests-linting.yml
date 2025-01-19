@@ -94,4 +94,5 @@ jobs:
             mkdocs-material-
       - run: pip install mkdocs-material
       - run: pip install mkdocs-awesome-pages-plugin
+      - run: pip install mkdocs-mermaid2-plugin
       - run: mkdocs gh-deploy --force
