@@ -1,0 +1,76 @@
+site_name: Pathfinding Algorithms Comparison
+site_url:  https://filiptwardawa.github.io/Pathfinding-Algorithms-Comparison/
+site_author: Filip Twardawa & Michał Muzykant & Adam Wowra
+site_description: Comprehensive documentation for Pathfinding Algorithms Comparison project.
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.indexes
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - toc.integrate
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: light-blue
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep-purple
+      accent: light-blue
+plugins:
+  - search
+  - awesome-pages
+  - mermaid2
+  - mkdocstrings:
+      handlers:
+        python:
+          selection:
+            docstring_style: google
+          rendering:
+            show_root_heading: true
+markdown_extensions:
+  - codehilite
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.magiclink
+  - pymdownx.tasklist
+  - pymdownx.tilde
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Modules:
+      - Main: modules/main.md
+      - Algorithms:
+          - Overview: modules/algorithms/index.md
+          - Dijkstra: modules/algorithms/dijkstra.md
+          - A*: modules/algorithms/a_star.md
+          - BFS: modules/algorithms/bfs.md
+      - Core:
+          - Overview: modules/core/index.md
+          - Algorithm Comparator: modules/core/algorithm_comparator.md
+          - Graph Processor: modules/core/graph_processor.md
+          - Graph Visualizer: modules/core/graph_visualizer.md
+          - Graph Styler: modules/core/graph_styler.md
+          - Path Reconstructor: modules/core/path_reconstructor.md
+          - Feature Flags: modules/core/feature_flags.md
+          - Algorithm Context: modules/core/algorithm_context.md
+          - Command: modules/core/command.md
+          - Decorators: modules/core/decorators.md
+          - Dependency Injector: modules/core/dependency_injector.md
+      - Utilities:
+          - Overview: modules/utils/index.md
+          - Graph Initializer: modules/utils/graph_initializer.md
+  - Testing:
+      - Overview: testing/index.md
+      - Test Algorithms: testing/test_algorithms.md
+      - Test Core Modules: testing/test_core.md
+      - Test Integration: testing/test_integration.md
+  - Results:
+      - Animations: results/animations.md
+      - Comparisons: results/comparisons.md

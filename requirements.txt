@@ -1,0 +1,14 @@
+matplotlib~=3.10.0
+osmnx~=2.0.1
+Pillow~=11.1.0
+pytest~=8.3.4
+pytest-cov
+Pillow
+pylint
+pytest-asyncio
+flake8==7.1.1
+black
+ruff
+flagsmith~=3.8.0
+pandas~=2.2.3
+networkx~=3.4.2
