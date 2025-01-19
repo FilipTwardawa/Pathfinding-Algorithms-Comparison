@@ -21,7 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install mkdocs mkdocs-material
+          pip install mkdocs mkdocs-material "mkdocs-mermaid2-plugin[test]" "mkdocstrings[python]" mkdocs-awesome-pages-plugin 
 
       - name: Build MkDocs site
         run: |
