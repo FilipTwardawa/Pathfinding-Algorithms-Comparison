@@ -93,8 +93,4 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install mkdocs-material
-      - run: pip install "mkdocs-mermaid2-plugin[test]"
-      - run: pip install mkdocs-awesome-pages-plugin
-      - run: pip install "mkdocs-material[search]"
-      - run: pip install "mkdocstrings[python]"
       - run: mkdocs gh-deploy --force
