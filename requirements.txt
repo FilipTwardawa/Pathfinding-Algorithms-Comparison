@@ -3,7 +3,6 @@ osmnx~=2.0.1
 Pillow~=11.1.0
 pytest~=8.3.4
 pytest-cov
-Pillow
 pylint
 pytest-asyncio
 flake8==7.1.1
