@@ -85,6 +85,16 @@ Pathfinding-Algorithms-Comparison/
 │   ├── graph_styler.py
 │   ├── graph_visualizer.py
 │   └──  path_reconstructor.py
+├── docs/
+│   ├── modules/
+|   |   ├── algorithms/   #.md files with documentation of algorithms.
+|   |   ├── core/   #.md files with documentation of core.
+|   |   ├── utils/  #.md files with documentation of utils.
+|   |   ├── main.md
+│   ├── results/ 
+│   ├── testing/  #.md files with documentation of tests.
+│   ├── index.md
+│   └── installation.md 
 ├── utils/
 │   ├── __init__.py
 │   └── graph_initializer.py
@@ -101,12 +111,15 @@ Pathfinding-Algorithms-Comparison/
 │   └── test_visualizer.py  
 ├── results/  # Output directory for visualizations and comparisons.
 ├── .flake8
+├── .gitignore
+├── LICENSE.txt
+├── mkdocs.yml
 ├── requirements.txt
 └── .github/
     └── workflows/
-        └── python-tests-linting.yml
+        ├── mkdocs_cicd.yml
+        └── python-tests-linting.yml       
 ````
-
 ---
 ## Getting Started
 
@@ -183,6 +196,12 @@ Testing
 - **test_visualizer_capture_frame**: Ensures that frames are captured during visualization.
 
 - **test_dependency_injection**: Validates correct behavior of the Dependency Injector.
+
+---
+
+## Quick code preview, thanks to MkDocs documentation in partnership with GitHub Pages and GitHub Pages
+https://filiptwardawa.github.io/Pathfinding-Algorithms-Comparison/
+
 
 ---
 ## Contributions
